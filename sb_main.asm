@@ -16,7 +16,7 @@ ANIMATE_MAIN:
 	CALL	VBLANK_PERIOD_WORK		; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
 	CALL	TOP_BORDER_RENDER		; timining-critical flipping of top border colours
 	CALL	HORIZON_RENDER			; timing critical to have the left/right borders show horizon
-	CALL 	MAIN_GAME_LOOP			; actual game loop
+	CALL 	MAIN_GAME_LOOP				; actual game loop
 	JR		ANIMATE_MAIN
 
 ; 8 scanline * 224 = 1,752 t-states (minus some for alignment, push/pop, calls, etc...)
