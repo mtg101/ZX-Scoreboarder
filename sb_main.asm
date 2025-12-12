@@ -26,7 +26,10 @@ VBLANK_PERIOD_WORK:
 	PUSH DE							
 	PUSH HL							
 
-	LD		B, 117
+	NOP
+	NOP
+
+	LD		B, 118
 VBLANK_LOOP:						
 	DJNZ	VBLANK_LOOP				
 									

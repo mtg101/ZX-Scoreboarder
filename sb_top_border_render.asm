@@ -22,15 +22,12 @@ TOP_BORDER_RENDER_LOOP:
 	OUTI	
 	OUTI	
 	OUTI	
-	OUTI	
 
+
+	; hblank & timing desu...
+	.5 NOP
 	LD  	B, A
-
-	; hblank
-	NOP
 	LD 		A, (HL)
-	;LD 		A, (HL)
-	;LD 		A, (HL)
 
 	DJNZ    TOP_BORDER_RENDER_LOOP
 
