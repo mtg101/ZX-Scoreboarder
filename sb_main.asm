@@ -4,7 +4,6 @@
 	
 	INCLUDE "speccy_defs.asm"		; must be indented
 	INCLUDE "sb_top_border_render.asm"
-	INCLUDE "sb_horizon_render.asm"
 	INCLUDE "sb_game.asm"
 	INCLUDE "sb_top_border_buffer.asm"
 	
@@ -16,7 +15,6 @@ ANIMATE_MAIN:
 	HALT							; wait for vsync (fired after bottom border, start of vblank)
 	CALL	VBLANK_PERIOD_WORK		; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
 	CALL	TOP_BORDER_RENDER		; timining-critical flipping of top border colours
-	CALL	HORIZON_RENDER			; timing critical to have the left/right borders show horizon
 	CALL 	MAIN_GAME_LOOP				; actual game loop
 	JR		ANIMATE_MAIN
 

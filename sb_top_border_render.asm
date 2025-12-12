@@ -4,7 +4,7 @@ TOP_BORDER_RENDER:
 	LD		C, $FE
 	LD 		HL, TOP_BORDER_BUFFER
 
-	LD 		B, 56
+	LD 		B, 88		; 56 plus bonus 32 as I don't need the t-states for this example
 TOP_BORDER_RENDER_LOOP:	
 	;11 cols
 	LD 		A, B
@@ -33,6 +33,9 @@ TOP_BORDER_RENDER_LOOP:
 	;LD 		A, (HL)
 
 	DJNZ    TOP_BORDER_RENDER_LOOP
+
+	LD  	A, 4		; green
+	OUT		($FE), A
 
 	ret								; TOP_BORDER_RENDER
 
