@@ -6,6 +6,7 @@
 	INCLUDE "sb_top_border_render.asm"
 	INCLUDE "sb_horizon_render.asm"
 	INCLUDE "sb_game.asm"
+	INCLUDE "sb_top_border_buffer.asm"
 	
 START:
 	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick
@@ -27,16 +28,13 @@ VBLANK_PERIOD_WORK:
 	PUSH DE							
 	PUSH HL							
 
-	LD		B, 121					
-
+	LD		B, 117
 VBLANK_LOOP:						
 	DJNZ	VBLANK_LOOP				
 									
 	; fiddling...
-	; LD	A, 7					
-	; LD	A, 7					
-	; NOP							
-	; NOP							
+	;.1 LD	A, 7					
+	;.3 NOP	
 
 	POP HL							
 	POP DE							

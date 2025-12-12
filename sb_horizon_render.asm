@@ -1,6 +1,29 @@
 ; timining-critical work allowing left/right border horizon
 ; 224 t-states per row
-HORIZON_RENDER:		
+HORIZON_RENDER:
+	LD 		A, %00000101			; cyan
+	OUT		($FE), A
+
+	LD 		B, 2
+HORIZON_RENDER_LOOP_OUTER:
+	PUSH 	BC
+
+	LD 		B, 255
+HORIZON_RENDER_LOOP_INNER:
+	DJNZ 	HORIZON_RENDER_LOOP_INNER
+
+	POP 	BC
+	DJNZ 	HORIZON_RENDER_LOOP_OUTER
+
+	LD 		B, 40
+HORIZON_RENDER_LOOP_EXTRA:
+	DJNZ 	HORIZON_RENDER_LOOP_EXTRA
+
+
+
+	LD 		A, %00000100			; green
+	OUT		($FE), A
+
 	ret								; HORIZON_RENDER
 
 
