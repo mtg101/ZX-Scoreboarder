@@ -1,0 +1,38 @@
+
+MAIN_GAME_LOOP: 
+    PUSH 	AF
+	LD 		A, (MAIN_FRAME)
+	AND   	%00000011				; 4 frames
+
+	CP      %00000001
+	JR      Z, MAIN_FRAME_1			; frame 1
+
+	CP      %00000010
+	JR      Z, MAIN_FRAME_2			; frame 2
+
+	CP      %00000011
+	JR      Z, MAIN_FRAME_3			; frame 3
+
+									; so frame 0...
+
+MAIN_FRAME_0:
+	JR 		MAIN_FRAME_DONE
+
+MAIN_FRAME_1:
+	JR 		MAIN_FRAME_DONE
+
+MAIN_FRAME_2:
+	JR 		MAIN_FRAME_DONE
+
+MAIN_FRAME_3:
+	; fall into MAIN_FRAME_DONE
+
+MAIN_FRAME_DONE:
+	LD 		A, (MAIN_FRAME)
+	INC 	A
+	LD 		(MAIN_FRAME), A
+
+	POP 	AF
+
+	RET								; MAIN_GAME_LOOP
+
