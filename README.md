@@ -1,6 +1,6 @@
 A POC of using the top border to display basic game info: lives, score, energy.
 
-My idea is that someone who actually write a game could use this as an engine to show the game status in the top border. 
+My idea is that someone who can actually write a game could use this as an engine to show the game status in the top border. 
 
 My 'game' is just a sprite that moves and can affect lives / score / energy. But it proves the concept of score in the border, then rending the game while chasing the beam.
 
