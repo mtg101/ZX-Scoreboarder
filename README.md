@@ -6,4 +6,4 @@ My 'game' is just a sprite that moves and can affect lives / score / energy. But
 
 Border resolution is only 11 columns, using OUTI to read directly from memory, rather than the maximum resolution of nearly 15 columns using self-modifying code as I did in my border demo: https://github.com/mtg101/Open-Borders -- this just makes things easier for someone to actually write a game around the scoreboarder engine. 
 
-
+And to make things more complicated... I've added a horizon effect with clouds. My demo 'game' can afford to lose 32 rows of t-states for it. Others can use it if they can afford it, or just stick to the main scorboarder. 
