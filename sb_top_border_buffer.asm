@@ -63,118 +63,42 @@ TOP_BORDER_BUFFER:
 	DEFB	3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3
 	DEFB	3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3
 
+
+	; horizon clouds
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
 	
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
 
-	
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
 
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
+	DEFB	0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2
 
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-	DEFS 	12, 5
-
+	DEFS 	512, 6
