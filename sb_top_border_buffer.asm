@@ -1,69 +1,6 @@
 ; 56 x 11
 TOP_BORDER_BUFFER:
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
-
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
-
+	DEFS 	56*11, COL_CYN
 
 	; horizon clouds -- just left & right 2 cols each
 	DEFB	5, 5, 5, 5
@@ -358,14 +295,104 @@ UPDATE_LIVES_1_READY:
 BORDER_BUFFER_SCORE:
 	DEFB	%00100011	; BCD 2-3 for testing
 
-BORDER_BUFFER_SCORE_COL:
-	DEFB	COL_BLK
-
-BORDER_BUFFER_SCORE_BG_COL:
-	DEFB	COL_BLK
+	; colours from font
 
 UPDATE_BORDER_BUFFER_SCORE:
+	; left
+	LD 		A, (BORDER_BUFFER_SCORE)
+	AND 	%11110000		; left BCD
+	SRL 	A
+	SRL 	A
+	SRL 	A				; shifted so it's double actual number
 
+	LD 		D, 0
+	LD 		E, A 			; DE is offset for LUT
+
+	LD 		HL, SB_BORDER_FONT_LUT
+	ADD 	HL, DE			; (hl) points to font
+	LD 		DE, (HL)
+	LD 		HL, DE
+
+	; copy font to buffer
+	LD 		DE, TOP_BORDER_BUFFER + 2	; start of left number
+
+	LD 		B, 8			; 8 lots of 7 rows
+UPDATE_BORDER_BUFFER_SCORE_OUTER_LOOP:
+	PUSH 	BC
+	; 7 rows of 3 pixels
+	LD 		B, 7
+UPDATE_BORDER_BUFFER_SCORE_INNER_LOOP:
+	PUSH 	HL
+
+	LDI 
+	LDI 
+	LDI 
+
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE				; skip 8 to next row
+
+	POP		HL
+	DJNZ 	UPDATE_BORDER_BUFFER_SCORE_INNER_LOOP
+
+	INC		HL
+	INC		HL
+	INC		HL				; move to new font row
+
+	POP 	BC
+	DJNZ 	UPDATE_BORDER_BUFFER_SCORE_OUTER_LOOP
+
+	; right
+	LD 		A, (BORDER_BUFFER_SCORE)
+	AND 	%00001111		; right BCD
+	SLA		A
+
+	LD 		D, 0
+	LD 		E, A 			; DE is offset for LUT
+
+	LD 		HL, SB_BORDER_FONT_LUT
+	ADD 	HL, DE			; (hl) point to font
+	LD 		DE, (HL)
+	LD 		HL, DE
+
+	; copy font to buffer
+	LD 		DE, TOP_BORDER_BUFFER + 6	; start of right number
+
+	LD 		B, 8			; 8 lots of 7 rows
+UPDATE_BORDER_BUFFER_SCORE_OUTER_LOOP_R:
+	PUSH 	BC
+	; 7 rows of 3 pixels
+	LD 		B, 7
+UPDATE_BORDER_BUFFER_SCORE_INNER_LOOP_R:
+	PUSH 	HL
+
+	LDI 
+	LDI 
+	LDI 
+
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE				; skip 8 to next row
+
+	POP		HL
+	DJNZ 	UPDATE_BORDER_BUFFER_SCORE_INNER_LOOP_R
+
+	INC		HL
+	INC		HL
+	INC		HL				; move to new font row
+
+	POP 	BC
+	DJNZ 	UPDATE_BORDER_BUFFER_SCORE_OUTER_LOOP_R
 
 	RET 				; UPDATE_BOARDER_BUFFER_SCORE
 

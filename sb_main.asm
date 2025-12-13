@@ -6,6 +6,7 @@
 	INCLUDE "sb_top_border_render.asm"
 	INCLUDE "sb_game.asm"
 	INCLUDE "sb_top_border_buffer.asm"
+	INCLUDE "sb_border_font.asm"
 	
 START:
 	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick
