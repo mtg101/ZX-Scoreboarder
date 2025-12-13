@@ -71,27 +71,27 @@ TOP_BORDER_BUFFER:
 	DEFB	5, 5, 5, 5
 	DEFB	5, 5, 5, 5
 	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
+	DEFB	5, 5, 7, 5
+	DEFB	5, 5, 7, 5
+	DEFB	5, 5, 7, 5
 	
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 7, 5, 5
-	DEFB	5, 7, 5, 5
-	DEFB	5, 7, 5, 5
-	DEFB	5, 7, 5, 5
-	DEFB	7, 7, 5, 5
-	DEFB	7, 7, 5, 5
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
 
+	DEFB	5, 7, 7, 7
+	DEFB	5, 7, 7, 7
+	DEFB	5, 7, 7, 5
+	DEFB	7, 7, 7, 5
+	DEFB	7, 7, 7, 5
+	DEFB	7, 7, 5, 5
+	DEFB	7, 7, 5, 5
 	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 7, 5
-	DEFB	5, 5, 7, 5
-	DEFB	5, 5, 7, 5
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
 
 	DEFB	5, 5, 5, 5
 	DEFB	5, 5, 5, 5
