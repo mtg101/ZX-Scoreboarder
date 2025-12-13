@@ -8,5 +8,5 @@ Border resolution is only 11 columns, using OUTI to read directly from memory, r
 
 And to make things more complicated... I've added a horizon effect with clouds. My demo 'game' can afford to lose 32 rows of t-states for it. Others can use it if they can afford it, or just stick to the main scorboarder. 
 
-One learning from this project is INCBIN. Allows including a binary file, which when ORG'd to screen memory shows as the screen. And I discovered Spetra image converter for creating those binary images: http://www.fruitcake.plus.com/Sinclair/Spectrum/Spectra/SpectraInterface_Software_ImageConverter.htm 
+One learning from this project is INCBIN. Allows including a binary file, which when ORG'd to screen memory shows as the screen. And I discovered Spectra image converter for creating those binary images: http://www.fruitcake.plus.com/Sinclair/Spectrum/Spectra/SpectraInterface_Software_ImageConverter.htm 
 
