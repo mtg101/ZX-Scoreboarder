@@ -1,69 +1,68 @@
 ; 56 x 11
 TOP_BORDER_BUFFER:
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
 	
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
 
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
 
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
 
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
 
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
-	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 5, 5
 
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
 
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 5, 5
 
 
 	; horizon clouds -- just left & right 2 cols each
@@ -371,7 +370,7 @@ UPDATE_BORDER_BUFFER_SCORE:
 	RET 				; UPDATE_BOARDER_BUFFER_SCORE
 
 BORDER_BUFFER_ENERGY:
-	DEFB	50
+	DEFB	47
 
 BORDER_BUFFER_ENERGY_HI_COL:
 	DEFB	COL_GRN
@@ -386,8 +385,92 @@ BORDER_BUFFER_ENERGY_BG_COL:
 	DEFB	COL_CYN
 
 UPDATE_BORDER_BUFFER_ENERGY:
+	LD 		DE, 10		; 11 per row, but INCing over for double column
+	LD 		HL, TOP_BORDER_BUFFER + 9
+						; points to first energy bar
+
+	; 56 - (BORDER_BUFFER_ENERGY) : rows of bg
+	LD 		A, (BORDER_BUFFER_ENERGY)
+	LD  	B, A
+	LD 		A, 56
+	SUB		B					; A now has how many rows of bg
+	JP 		Z, ENERGY_HI	; energy is 56 full, no bg colour needed
+
+	LD 		B, A
+	LD 		A, (BORDER_BUFFER_ENERGY_BG_COL)
+ENERGY_BG_LOOP:
+	LD 	 	(HL), A
+	INC 	HL
+	LD 	 	(HL), A
+	ADD 	HL, DE
+	DJNZ 	ENERGY_BG_LOOP
+
+ENERGY_HI:
+	; (BORDER_BUFFER_ENERGY) - 42 : rows of hi (max 14)
+	LD 		A, 42
+	LD 		B, A
+	LD 		A, (BORDER_BUFFER_ENERGY)
+	SUB 	B				; (BORDER_BUFFER_ENERGY) - 42
+	JP   	C, ENERGY_MID	; negative so no hi
+	JP      Z, ENERGY_MID	; 0 so no high
+
+	LD		B, A 
+	LD 		A, (BORDER_BUFFER_ENERGY_HI_COL)
+ENERGY_HI_LOOP:
+	LD 	 	(HL), A
+	INC 	HL
+	LD 	 	(HL), A
+	ADD 	HL, DE
+	DJNZ 	ENERGY_HI_LOOP
 
 
+ENERGY_MID:
+	; (BORDER_BUFFER_ENERGY) - 21 : rows of med (max 21)
+	LD 		A, 21
+	LD 		B, A
+	LD 		A, (BORDER_BUFFER_ENERGY)
+	SUB 	B				; (BORDER_BUFFER_ENERGY) - 42
+	JP   	C, ENERGY_LOW	; negative so no med
+	JP      Z, ENERGY_LOW	; 0 so no med
+
+	CP 		21
+	JP 		C, ENERGY_MED_OK
+
+	LD 		A, 21			; max 21
+
+ENERGY_MED_OK:
+	LD		B, A 
+	LD 		A, (BORDER_BUFFER_ENERGY_MED_COL)
+ENERGY_MED_LOOP:
+	LD 	 	(HL), A
+	INC 	HL
+	LD 	 	(HL), A
+	ADD 	HL, DE
+	DJNZ 	ENERGY_MED_LOOP
+
+
+ENERGY_LOW:
+	; (BORDER_BUFFER_ENERGY)  : rows of low (max 21)
+	LD 		A, (BORDER_BUFFER_ENERGY)
+	CP 		0
+	JP      Z, ENERGY_DONE	; 0 so no low
+
+	CP 		21
+	JP 		C, ENERGY_LOW_OK
+
+	LD 		A, 21			; max 21
+
+ENERGY_LOW_OK:
+	LD		B, A 
+	LD 		A, (BORDER_BUFFER_ENERGY_LOW_COL)
+ENERGY_LOW_LOOP:
+	LD 	 	(HL), A
+	INC 	HL
+	LD 	 	(HL), A
+	ADD 	HL, DE
+	DJNZ 	ENERGY_LOW_LOOP
+
+ENERGY_DONE:
 	RET					; UPDATE_BORDER_BUFFER_ENERGY
 
 
