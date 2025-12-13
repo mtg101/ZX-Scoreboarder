@@ -1,68 +1,68 @@
 ; 56 x 11
 TOP_BORDER_BUFFER:
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
 	
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 4, 4
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 4, 4
 
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
 
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
 
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
-	DEFB	1, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 6, 6
 
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 2, 2
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 2, 2
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 2, 2
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 2, 2
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 2, 2
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 2, 2
-	DEFB	5, 1, 0, 5, 0, 5, 0, 5, 0, 2, 2
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
+	DEFB	5, 5, 0, 5, 0, 5, 0, 5, 0, 2, 2
 
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	1, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
 
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 2, 2
-	DEFB	5, 1, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
+	DEFB	5, 5, 0, 0, 0, 5, 0, 0, 0, 2, 2
 
 
 
@@ -103,4 +103,291 @@ TOP_BORDER_BUFFER:
 	DEFB	5, 5, 5, 5
 	DEFB	5, 5, 5, 5
 
-	DEFS 	512, 6
+
+UPDATE_BORDER_BUFFER:
+	CALL	UPDATE_BORDER_BUFFER_LIVES
+	CALL	UPDATE_BORDER_BUFFER_SCORE
+	CALL	UPDATE_BORDER_BUFFER_ENERGY
+	RET 				; UPDATE_BORDER_BUFFER
+
+BORDER_BUFFER_LIVES:
+	DEFB	6			; 6 / 8 lives
+
+BORDER_BUFFER_LIVES_PEN:
+	DEFB	COL_BLU
+
+BORDER_BUFFER_LIVES_PAP:
+	DEFB	COL_CYN			
+
+UPDATE_BORDER_BUFFER_LIVES:
+	LD 		DE, 11
+	LD		HL, TOP_BORDER_BUFFER
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		8
+	JP      C, UPDATE_LIVES_8_OFF
+
+UPDATE_LIVES_8_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_8_READY
+
+UPDATE_LIVES_8_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_8_READY:
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		7
+	JP      C, UPDATE_LIVES_7_OFF
+
+UPDATE_LIVES_7_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_7_READY
+
+UPDATE_LIVES_7_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_7_READY:
+	INC		HL			; right hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		6
+	JP      C, UPDATE_LIVES_6_OFF
+
+UPDATE_LIVES_6_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_6_READY
+
+UPDATE_LIVES_6_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_6_READY:
+	DEC 	HL			; left hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		5
+	JP      C, UPDATE_LIVES_5_OFF
+
+UPDATE_LIVES_5_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_5_READY
+
+UPDATE_LIVES_5_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_5_READY:
+	INC		HL			; right hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		4
+	JP      C, UPDATE_LIVES_4_OFF
+
+UPDATE_LIVES_4_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_4_READY
+
+UPDATE_LIVES_4_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_4_READY:
+	DEC 	HL			; left hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		3
+	JP      C, UPDATE_LIVES_3_OFF
+
+UPDATE_LIVES_3_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_3_READY
+
+UPDATE_LIVES_3_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_3_READY:
+	INC		HL			; right hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		2
+	JP      C, UPDATE_LIVES_2_OFF
+
+UPDATE_LIVES_2_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_2_READY
+
+UPDATE_LIVES_2_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_2_READY:
+	DEC 	HL			; left hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		1
+	JP      C, UPDATE_LIVES_1_OFF
+
+UPDATE_LIVES_1_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_1_READY
+
+UPDATE_LIVES_1_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_1_READY:
+	INC		HL			; right hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	RET 				; UPDATE_BOARDER_BUFFER_LIVES
+
+BORDER_BUFFER_SCORE:
+	DEFB	%00100011	; BCD 2-3 for testing
+
+BORDER_BUFFER_SCORE_COL:
+	DEFB	COL_BLK
+
+BORDER_BUFFER_SCORE_BG_COL:
+	DEFB	COL_BLK
+
+UPDATE_BORDER_BUFFER_SCORE:
+
+
+	RET 				; UPDATE_BOARDER_BUFFER_SCORE
+
+BORDER_BUFFER_ENERGY:
+	DEFB	50
+
+BORDER_BUFFER_ENERGY_HI_COL:
+	DEFB	COL_GRN
+
+BORDER_BUFFER_ENERGY_MED_COL:
+	DEFB	COL_YEL
+
+BORDER_BUFFER_ENERGY_LOW_COL:
+	DEFB	COL_RED
+
+BORDER_BUFFER_ENERGY_BG_COL:
+	DEFB	COL_CYN
+
+UPDATE_BORDER_BUFFER_ENERGY:
+
+
+	RET					; UPDATE_BORDER_BUFFER_ENERGY
+
+
