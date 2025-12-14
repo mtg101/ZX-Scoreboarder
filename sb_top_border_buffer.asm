@@ -316,19 +316,48 @@ BORDER_BUFFER_SCORE:
 
 	; colours from font
 
+
+BORDER_BUFFER_SCORE_INC:
+	LD 		A, (BORDER_BUFFER_SCORE)     
+
+	; check max
+	CP 		%10011001
+	RET 	Z
+
+	; inc
+    ADD 	A, 1        ; ADD not INC for correct flags
+    DAA                 ; BCD adjust
+    LD 		(BORDER_BUFFER_SCORE), A
+
+	RET 				; BORDER_BUFFER_SCORE_INC
+
+BORDER_BUFFER_SCORE_DEC:
+	LD 		A, (BORDER_BUFFER_SCORE)     
+
+	; check min
+	CP 		0
+	RET 	Z
+
+	; dec
+    SUB 	1           ; SUB not DEC for correct flags
+    DAA                 ; BCD adjust
+    LD 		(BORDER_BUFFER_SCORE), A
+
+	RET 				; BORDER_BUFFER_SCORE_DEC
+
 UPDATE_BORDER_BUFFER_SCORE:
 	; left
 	LD 		A, (BORDER_BUFFER_SCORE)
-	AND 	%11110000		; left BCD
+	AND 	%11110000	; left BCD
 	SRL 	A
 	SRL 	A
-	SRL 	A				; shifted so it's double actual number
+	SRL 	A			; shifted so it's double actual number
 
 	LD 		D, 0
-	LD 		E, A 			; DE is offset for LUT
+	LD 		E, A 		; DE is offset for LUT
 
 	LD 		HL, SB_BORDER_FONT_LUT
-	ADD 	HL, DE			; (hl) points to font
+	ADD 	HL, DE		; (hl) points to font
 	LD 		DE, (HL)
 	LD 		HL, DE
 
