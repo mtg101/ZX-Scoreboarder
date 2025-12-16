@@ -73,14 +73,14 @@ SB_BORDER_FONT_5:
 	DEFB 		0, 0, 0
 
 SB_BORDER_FONT_6:
+	DEFB 		5, 0, 0
 	DEFB 		0, 0, 0
-	DEFB 		0, 5, 5
 	DEFB 		0, 5, 5
 	DEFB 		0, 0, 5
 	DEFB 		0, 5, 0
 	DEFB 		0, 5, 0
 	DEFB 		0, 0, 0
-	DEFB 		0, 0, 5
+	DEFB 		5, 0, 5
 
 SB_BORDER_FONT_7:
 	DEFB 		0, 0, 0
@@ -89,25 +89,25 @@ SB_BORDER_FONT_7:
 	DEFB 		5, 0, 0
 	DEFB 		0, 0, 5
 	DEFB 		0, 0, 5
-	DEFB 		0, 0, 5
+	DEFB 		0, 5, 5
 	DEFB 		0, 5, 5
 
 SB_BORDER_FONT_8:
 	DEFB 		0, 0, 0
 	DEFB 		0, 0, 0
 	DEFB 		0, 5, 0
-	DEFB 		0, 0, 0
+	DEFB 		0, 5, 0
 	DEFB 		0, 0, 0
 	DEFB 		0, 5, 0
 	DEFB 		0, 0, 0
 	DEFB 		0, 0, 0
 
 SB_BORDER_FONT_9:
-	DEFB 		0, 0, 0
-	DEFB 		0, 0, 0
-	DEFB 		0, 5, 0
-	DEFB 		0, 5, 0
 	DEFB 		5, 0, 5
+	DEFB 		0, 0, 0
+	DEFB 		0, 5, 0
+	DEFB 		0, 5, 0
+	DEFB 		5, 0, 0
 	DEFB 		5, 5, 0
 	DEFB 		0, 0, 0
 	DEFB 		0, 0, 5
