@@ -42,7 +42,6 @@ ATTR_RPWI		= %00010111
 ATTR_BRPWI		= %01010111
 
 
-
 ; ROM calls
 ROM_CLS			= $0DAF					; cls and open Channel 2 
 ROM_BORDER		= $229B					; set border to value in a
@@ -53,6 +52,7 @@ ROM_BEEPER      = $03B5                 ; hl pitch, de duration (based on pitch.
 ; system vars
 UDG_START		= $FF58
 ATTR_START		= $5800
+ATTR_END        = $5AFF
 SCREEN_START	= $4000
 MASK_P			= $5C8E					; set bits take from existing color, not ATTR_P
 ATTR_P			= $5C8D					; current ATTRs
