@@ -4,8 +4,9 @@
 	
 	INCLUDE "speccy_defs.asm"		; must be indented
 	INCLUDE "sb_top_border_render.asm"
-	INCLUDE "sb_game.asm"
 	INCLUDE "sb_top_border_buffer.asm"
+	INCLUDE "sb_bottom_border.asm"
+	INCLUDE "sb_game.asm"
 	INCLUDE "sb_border_font.asm"
 	INCLUDE "sb_sprite.asm"
 	
@@ -24,7 +25,7 @@ ANIMATE_MAIN:
 	JP		ANIMATE_MAIN
 
 ; flashing green on green 
-ATTR_FGG        = %10110110
+ATTR_FGG        = %10100100
 
 WAIT_BOTTOM_MAIN_SCREEN:
 	LD     C, $FF
@@ -43,11 +44,6 @@ WAIT_BOTTOM_MAIN_SCREEN_LOOP:
 WAIT_BOTTOM_MAIN_SCREEN_DONE:
 	RET 							; WAIT_BOTTOM_MAIN_SCREEN
 
-BOTTOM_BORDER_RENDER:
-	LD 		A, 0
-	OUT		($FE), A				; set border
-	
-	RET 							; BOTTOM_BORDER_RENDER
 
 ; 8 scanline * 224 = 1,752 t-states (minus some for alignment, push/pop, calls, etc...)
 ; we use it to flicker a window's colour based on pre-calculated stuff 
@@ -81,8 +77,8 @@ INITIAL_SETUP:
 
 	CALL 	SPRITE_INIT				; draw initial sprite and any other setup
 
-	LD 		B, 32					; number of block to set to trigger attr
-	LD 		HL, ATTR_END - 31		; first attr to change
+	LD 		B, 17					; number of block to set to trigger attr
+	LD 		HL, ATTR_END - 16		; first attr to change
 	LD 		A, ATTR_FGG				; trigger attr (flashing green on green)
 INITIAL_SETUP_TRIGGE_ATTR_LOOP:	
 	LD		(HL), A 
