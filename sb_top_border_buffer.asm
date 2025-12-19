@@ -324,7 +324,8 @@ BORDER_BUFFER_SCORE_INC:
 	CP 		%10011001
 	RET 	Z
 
-	; in    ADD 	A, 1        ; ADD not INC for correct flags
+	; inc
+	ADD 	A, 1        ; ADD not INC for correct flags
     DAA                 ; BCD adjust
     LD 		(BORDER_BUFFER_SCORE), A
 
