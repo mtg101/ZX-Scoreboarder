@@ -5,7 +5,7 @@ BOTTOM_BORDER_RENDER:
 ;	OUT		($FE), A				; set border
 
 	; timing for actual bottom border
-	LD		B, 102
+	LD		B, 178
 BOTTOM_BORDER_TIMING_LOOP:
 	DJNZ	BOTTOM_BORDER_TIMING_LOOP
 
@@ -16,10 +16,10 @@ BOTTOM_BORDER_TIMING_LOOP:
 	LD		C, $FE
 	LD 		HL, BOTTOM_BORDER_BUFFER
 
-	LD 		B, 55		; 55 bottom border, giving time to halt and resync
+	LD 		B, 50		; 55 bottom border, giving time to halt and resync
 BOTTOM_BORDER_RENDER_LOOP:	
 	;11 cols
-	LD 		A, B
+	LD 		A, B		; save loop B in A
 
 	OUTI	
 	OUTI	
@@ -38,7 +38,7 @@ BOTTOM_BORDER_RENDER_LOOP:
 
 	; hblank & timing desu...
 	.5 NOP
-	LD  	B, A
+	LD  	B, A		; restore loop B from A
 	LD 		A, (HL)
 
 	DJNZ    BOTTOM_BORDER_RENDER_LOOP

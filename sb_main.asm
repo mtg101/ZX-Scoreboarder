@@ -15,7 +15,7 @@ START:
 	CALL 	INITIAL_SETUP
 
 ANIMATE_MAIN:
-	CALL	WAIT_BOTTOM_MAIN_SCREEN	; wait for end of main screen draw
+	CALL	WAIT_BOTTOM_MAIN_SCREEN_TIGHT	; wait for end of main screen draw
 	CALL 	BOTTOM_BORDER_RENDER	; timing critical
 	HALT							; wait for vsync (fired after bottom border, start of vblank)
 
@@ -27,22 +27,33 @@ ANIMATE_MAIN:
 ; flashing green on green 
 ATTR_FGG        = %10100100
 
-WAIT_BOTTOM_MAIN_SCREEN:
-	LD     C, $FF
-	INC 	HL
-WAIT_BOTTOM_MAIN_SCREEN_LOOP:
-	IN  	A, (C)					; read from floating bus
-	CP 		ATTR_FGG				; flashing green on green is trigger
-	JP 		Z, WAIT_BOTTOM_MAIN_SCREEN_DONE	; tight wait for trigger colour...
+WAIT_BOTTOM_MAIN_SCREEN_TIGHT:
+	SBC 	A, 2
+	.3 NOP
+WAIT_BOTTOM_MAIN_SCREEN_TIGHT_LOOP:
+	IN 		A, ($FF)
+	CP 		ATTR_FGG
+	RET 	Z						; WAIT_BOTTOM_MAIN_SCREEN_TIGHT
+	JP 		WAIT_BOTTOM_MAIN_SCREEN_TIGHT_LOOP
 
-	IN  	A, ($FF)					; read from floating bus
-	CP 		ATTR_FGG				; flashing green on green is trigger
-	JP 		Z, WAIT_BOTTOM_MAIN_SCREEN_DONE	; tight wait for trigger colour...
 
-	JP		WAIT_BOTTOM_MAIN_SCREEN_LOOP
 
-WAIT_BOTTOM_MAIN_SCREEN_DONE:
-	RET 							; WAIT_BOTTOM_MAIN_SCREEN
+
+; WAIT_BOTTOM_MAIN_SCREEN:
+; 	LD     C, $FF
+; WAIT_BOTTOM_MAIN_SCREEN_LOOP:
+; 	IN  	A, (C)					; read from floating bus
+; 	CP 		ATTR_FGG				; flashing green on green is trigger
+; 	JP 		Z, WAIT_BOTTOM_MAIN_SCREEN_DONE	; tight wait for trigger colour...
+	
+; 	IN  	A, ($FF)					; read from floating bus
+; 	CP 		ATTR_FGG				; flashing green on green is trigger
+; 	JP 		Z, WAIT_BOTTOM_MAIN_SCREEN_DONE	; tight wait for trigger colour...
+
+; 	JP		WAIT_BOTTOM_MAIN_SCREEN_LOOP
+
+; WAIT_BOTTOM_MAIN_SCREEN_DONE:
+; 	RET 							; WAIT_BOTTOM_MAIN_SCREEN
 
 
 ; 8 scanline * 224 = 1,752 t-states (minus some for alignment, push/pop, calls, etc...)
