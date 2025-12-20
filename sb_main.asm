@@ -9,6 +9,7 @@
 	INCLUDE "sb_game.asm"
 	INCLUDE "sb_border_font.asm"
 	INCLUDE "sb_sprite.asm"
+	INCLUDE "vector_output.asm"
 	
 START:
 	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick

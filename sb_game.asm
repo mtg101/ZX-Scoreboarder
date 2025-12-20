@@ -61,6 +61,17 @@ USER_INPUT:
 	BIT 	2, A 					; z
 	CALL 	Z, BORDER_BUFFER_LIVES_INC
 
+	LD 		BC, $FBFE				; Q	W	E	R	T
+	IN 		A, (C)
+
+	PUSH	AF
+	BIT 	1, A 					; w
+	CALL 	Z, SPRITE_MOVE_RIGHT
+	POP 	AF
+
+	BIT 	0, A 					; q
+	CALL 	Z, SPRITE_MOVE_LEFT
+
 	LD 		BC, $DFFE				; P	O	I	U	Y
 	IN 		A, (C)
 
