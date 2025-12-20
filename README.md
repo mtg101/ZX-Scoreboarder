@@ -10,3 +10,5 @@ And to make things more complicated... I've added a horizon effect with clouds. 
 
 One learning from this project is INCBIN. Allows including a binary file, which when ORG'd to screen memory shows as the screen. And I discovered Spectra image converter for creating those binary images: http://www.fruitcake.plus.com/Sinclair/Spectrum/Spectra/SpectraInterface_Software_ImageConverter.htm 
 
+And... now I'm trying to add bottom border support using the floating bus trick -- which is much more complicated timings that change with what you do during the main game loop. 
+If anyone actually wants to use the scoreboard, best just ignore the bottom border stuff so you don't have to care about timings in your game loop.
