@@ -39,7 +39,7 @@ SPRITE_FLIP_LOOP:
 	LD 		D, 0
 	LD 		E, A 					; DE is now index for offset
 	ADD 	HL, DE					; HL points to flipped byte
-	LD 		A, (HL) 				; A has flipper byte
+	LD 		A, (HL) 				; A has flipped byte
 	EXX 							; flip back to old HL and friends
 	LD 		(HL), A 				; replace with flipped byte
 
@@ -51,7 +51,7 @@ SPRITE_FLIP_LOOP:
 	LD 		D, 0
 	LD 		E, A 					; DE is now index for offset
 	ADD 	HL, DE					; HL points to flipped byte
-	LD 		A, (HL) 				; A has flipper byte
+	LD 		A, (HL) 				; A has flipped byte
 	EXX 							; flip back to old HL and friends
 	LD 		(HL), A 				; replace with flipped byte
 
@@ -63,22 +63,22 @@ SPRITE_FLIP_LOOP:
 	LD 		D, 0
 	LD 		E, A 					; DE is now index for offset
 	ADD 	HL, DE					; HL points to flipped byte
-	LD 		A, (HL) 				; A has flipper byte
+	LD 		A, (HL) 				; A has flipped byte
 	EXX 							; flip back to old HL and friends
 	LD 		(HL), A 				; replace with flipped byte
 
-	; swap bytes 0 and 2
-	LD 		D, A 					; D has 3rd byte
-	DEC 	HL 
-	DEC 	HL 						; HL points to 1st byte
-	LD 		A, (HL)					; A has first byte
-	LD 		E, A 					; E has first byte
+	; ; swap bytes 0 and 2
+	; LD 		D, A 					; D has 3rd byte
+	; DEC 	HL 
+	; DEC 	HL 						; HL points to 1st byte
+	; LD 		A, (HL)					; A has first byte
+	; LD 		E, A 					; E has first byte
 
-	LD 		(HL), D					; first byte now has 3rd
-	INC 	HL 	
-	INC 	HL 						; HL points to 3rd byte
+	; LD 		(HL), D					; first byte now has 3rd
+	; INC 	HL 	
+	; INC 	HL 						; HL points to 3rd byte
 
-	LD 		(HL), E					; 3rd byte now has first
+	; LD 		(HL), E					; 3rd byte now has first
 
 	INC 	HL						; next row
 
