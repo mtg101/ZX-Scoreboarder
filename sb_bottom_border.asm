@@ -7,7 +7,7 @@ BOTTOM_BORDER_RENDER:
 
 
 ; hack off as it needs exact timing to avoid flashing like shit...
-	RET
+;	RET
 
 
 
