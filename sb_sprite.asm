@@ -17,8 +17,6 @@ SPRITE_RENDER:
 	RET 				; SPRITE_RENDER
 
 SPRITE_SHIFT:
-	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
-
 	LD 		A, (SPRITE_X)			; current x
 	AND 	%00000111				; get just 0-7 offset
 	LD 		B, A 					; B has current offset
@@ -26,13 +24,17 @@ SPRITE_SHIFT:
 	LD 		A, (SPRITE_X_NEW)		; new x
 	AND 	%00000111				; get just 0-7 offset
 
-	CP 		B 						; A = new A - old B
+	SUB 	B 						; A = new A - old B
 	RET 	Z 						; no change, return
 	JP 		C, SPRITE_SHIFT_LEFT	; new A is < old B
 
 SPRITE_SHIFT_RIGHT:					; new A is > old B
+	CP 		7
+	JP 		Z, SPRITE_SHIFT_BYTE_RIGHT_7
+
 	LD 		B, A					; current A is number of shifts
 SPRITE_SHIFT_RIGHT_LOOP:
+	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
 	PUSH 	BC 
 	LD 		B, 32 					; 32 sprite rows
 SPRITE_SHIFT_RIGHT_ROW_LOOP:
@@ -50,21 +52,121 @@ SPRITE_SHIFT_RIGHT_ROW_LOOP:
 
 	JP 		SPRITE_SHIFT_DONE
 
+SPRITE_SHIFT_BYTE_RIGHT_7:			; bytes right, then shift left 1
+									; bytes right
+	LD 		HL, SPRITE_ROW_BUFFER+1	; one to copy right
+	LD 		B, 32 					; 32 sprite rows
+SPRITE_SHIFT_BYTE_RIGHT_7_LOOP_BYTES:
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; move to next row
+
+	DJNZ 	SPRITE_SHIFT_BYTE_RIGHT_7_LOOP_BYTES
+
+
+									; shift left
+	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
+	LD 		B, 32 					; 32 sprite rows
+SPRITE_SHIFT_BYTE_RIGHT_7_LOOP:
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+	DJNZ 	SPRITE_SHIFT_BYTE_RIGHT_7_LOOP
+
+	JP 		SPRITE_SHIFT_DONE
+
 SPRITE_SHIFT_LEFT:					; new A is < old B
 	NEG								; A was negative
-	LD 		B, A 					; number of shifts
+	CP 		7
+	JP 		Z, SPRITE_SHIFT_BYTE_LEFT_7
 
+	LD 		B, A 					; number of shifts
 SPRITE_SHIFT_LEFT_LOOP:	
+	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
 	PUSH 	BC 
 	LD 		B, 32 					; 32 sprite rows
 SPRITE_SHIFT_LEFT_ROW_LOOP:
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
 
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
 
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
 
 	DJNZ 	SPRITE_SHIFT_LEFT_ROW_LOOP
 
 	POP 	BC
 	DJNZ 	SPRITE_SHIFT_LEFT_LOOP
+
+	JP 		SPRITE_SHIFT_DONE
+
+SPRITE_SHIFT_BYTE_LEFT_7:			; shift right one, then bytes left
+	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
+
+									; shift right one
+	LD 		B, 32 					; 32 sprite rows
+SPRITE_SHIFT_BYTE_LEFT_7_LOOP:
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+	DJNZ 	SPRITE_SHIFT_BYTE_LEFT_7_LOOP
+
+									; bytes left
+	LD 		HL, SPRITE_ROW_BUFFER+1	; one to copy left
+	LD 		B, 32 					; 32 sprite rows
+SPRITE_SHIFT_BYTE_LEFT_7_LOOP_BYTES:
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; move to next row
+
+	DJNZ 	SPRITE_SHIFT_BYTE_LEFT_7_LOOP_BYTES
 
 SPRITE_SHIFT_DONE:
 	RET								; SPRITE_SHIFT
