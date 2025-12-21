@@ -33,16 +33,54 @@ SPRITE_FLIP:
 	LD 		B, 32 					; 32 sprite rows
 SPRITE_FLIP_LOOP:
 	; flip first byte
+	LD 		A, (HL) 				; get byte
+	EXX 							; flip out HL and friends 
+	LD 		HL, SPRITE_FLIP_LUT		; LUT
+	LD 		D, 0
+	LD 		E, A 					; DE is now index for offset
+	ADD 	HL, DE					; HL points to flipped byte
+	LD 		A, (HL) 				; A has flipper byte
+	EXX 							; flip back to old HL and friends
+	LD 		(HL), A 				; replace with flipped byte
 
-
+	INC 	HL
 	; flip second byte
+	LD 		A, (HL) 				; get byte
+	EXX 							; flip out HL and friends 
+	LD 		HL, SPRITE_FLIP_LUT		; LUT
+	LD 		D, 0
+	LD 		E, A 					; DE is now index for offset
+	ADD 	HL, DE					; HL points to flipped byte
+	LD 		A, (HL) 				; A has flipper byte
+	EXX 							; flip back to old HL and friends
+	LD 		(HL), A 				; replace with flipped byte
 
-
+	INC 	HL
 	; flip 3rd byte
-
+	LD 		A, (HL) 				; get byte
+	EXX 							; flip out HL and friends 
+	LD 		HL, SPRITE_FLIP_LUT		; LUT
+	LD 		D, 0
+	LD 		E, A 					; DE is now index for offset
+	ADD 	HL, DE					; HL points to flipped byte
+	LD 		A, (HL) 				; A has flipper byte
+	EXX 							; flip back to old HL and friends
+	LD 		(HL), A 				; replace with flipped byte
 
 	; swap bytes 0 and 2
+	LD 		D, A 					; D has 3rd byte
+	DEC 	HL 
+	DEC 	HL 						; HL points to 1st byte
+	LD 		A, (HL)					; A has first byte
+	LD 		E, A 					; E has first byte
 
+	LD 		(HL), D					; first byte now has 3rd
+	INC 	HL 	
+	INC 	HL 						; HL points to 3rd byte
+
+	LD 		(HL), E					; 3rd byte now has first
+
+	INC 	HL						; next row
 
 	DJNZ 	SPRITE_FLIP_LOOP
 
