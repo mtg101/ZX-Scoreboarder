@@ -67,23 +67,109 @@ SPRITE_FLIP_LOOP:
 	EXX 							; flip back to old HL and friends
 	LD 		(HL), A 				; replace with flipped byte
 
-	; ; swap bytes 0 and 2
-	; LD 		D, A 					; D has 3rd byte
-	; DEC 	HL 
-	; DEC 	HL 						; HL points to 1st byte
-	; LD 		A, (HL)					; A has first byte
-	; LD 		E, A 					; E has first byte
+	; swap bytes 0 and 2
+	LD 		D, A 					; D has 3rd byte
+	DEC 	HL 
+	DEC 	HL 						; HL points to 1st byte
+	LD 		A, (HL)					; A has first byte
+	LD 		E, A 					; E has first byte
 
-	; LD 		(HL), D					; first byte now has 3rd
-	; INC 	HL 	
-	; INC 	HL 						; HL points to 3rd byte
+	LD 		(HL), D					; first byte now has 3rd
+	INC 	HL 	
+	INC 	HL 						; HL points to 3rd byte
 
-	; LD 		(HL), E					; 3rd byte now has first
+	LD 		(HL), E					; 3rd byte now has first
 
 	INC 	HL						; next row
 
 	DJNZ 	SPRITE_FLIP_LOOP
 
+	; correct 'offset'
+	LD 		A, (SPRITE_X)
+	AND 	%00000111				; 0-7 'offset' in A
+
+	CP  	0
+	JP 		Z, SPRITE_FLIP_CORRECT_0
+
+	CP  	1
+	JP 		Z, SPRITE_FLIP_CORRECT_1
+
+	CP  	2
+	JP 		Z, SPRITE_FLIP_CORRECT_2
+
+	CP  	3
+	JP 		Z, SPRITE_FLIP_CORRECT_3
+
+	CP  	4
+	JP 		Z, SPRITE_FLIP_CORRECT_4
+
+	CP  	5
+	JP 		Z, SPRITE_FLIP_CORRECT_5
+
+	CP  	6
+	JP 		Z, SPRITE_FLIP_CORRECT_6
+
+	CP  	7
+	JP 		Z, SPRITE_FLIP_CORRECT_7
+
+SPRITE_FLIP_CORRECT_0:
+	LD 		B, 32					; manual byte shift left
+	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
+SPRITE_FLIP_CORRECT_0_LOOP:
+	INC 	HL
+	LD 		A, (HL)
+	DEC 	HL 
+	LD 		(HL), A 				; moved byte 1 to byte 0
+
+	INC 	HL
+	INC 	HL
+	LD 		A, (HL)
+	DEC 	HL 
+	LD 		(HL), A 				; moved byte 2 to byte 1
+
+	INC 	HL
+	LD 		(HL), 0					; blank byte 2
+
+	INC 	HL 						; next row
+	
+	DJNZ 	SPRITE_FLIP_CORRECT_0_LOOP
+	JP 		SPRITE_FLIP_CRRECT_DONE
+
+SPRITE_FLIP_CORRECT_1:
+	LD 		B, 6
+	CALL 	SPRITE_SHIFT_LEFT_B
+	JP 		SPRITE_FLIP_CRRECT_DONE
+
+SPRITE_FLIP_CORRECT_2:
+	LD 		B, 4
+	CALL 	SPRITE_SHIFT_LEFT_B
+	JP 		SPRITE_FLIP_CRRECT_DONE
+
+SPRITE_FLIP_CORRECT_3:
+	LD 		B, 2
+	CALL 	SPRITE_SHIFT_LEFT_B
+	JP 		SPRITE_FLIP_CRRECT_DONE
+
+SPRITE_FLIP_CORRECT_4:
+; we're good at half way, no change needed
+	JP 		SPRITE_FLIP_CRRECT_DONE
+
+SPRITE_FLIP_CORRECT_5:
+	LD 		B, 2
+	CALL 	SPRITE_SHIFT_RIGHT_B
+	JP 		SPRITE_FLIP_CRRECT_DONE
+
+SPRITE_FLIP_CORRECT_6:
+	LD 		B, 4
+	CALL 	SPRITE_SHIFT_RIGHT_B
+	JP 		SPRITE_FLIP_CRRECT_DONE
+
+SPRITE_FLIP_CORRECT_7:
+	LD 		B, 6
+	CALL 	SPRITE_SHIFT_RIGHT_B
+	JP 		SPRITE_FLIP_CRRECT_DONE
+
+SPRITE_FLIP_CRRECT_DONE:
 	RET 							; SPRITE_FLIP
 
 SPRITE_SHIFT:
@@ -103,22 +189,7 @@ SPRITE_SHIFT_RIGHT:					; new A is > old B
 	JP 		Z, SPRITE_SHIFT_BYTE_RIGHT_7
 
 	LD 		B, A					; current A is number of shifts
-SPRITE_SHIFT_RIGHT_LOOP:
-	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
-	PUSH 	BC 
-	LD 		B, 32 					; 32 sprite rows
-SPRITE_SHIFT_RIGHT_ROW_LOOP:
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-	DJNZ 	SPRITE_SHIFT_RIGHT_ROW_LOOP
-
-	POP 	BC
-	DJNZ 	SPRITE_SHIFT_RIGHT_LOOP
+	CALL 	SPRITE_SHIFT_RIGHT_B
 
 	JP 		SPRITE_SHIFT_DONE
 
@@ -176,28 +247,7 @@ SPRITE_SHIFT_LEFT:					; new A is < old B
 	JP 		Z, SPRITE_SHIFT_BYTE_LEFT_7
 
 	LD 		B, A 					; number of shifts
-SPRITE_SHIFT_LEFT_LOOP:	
-	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
-	PUSH 	BC 
-	LD 		B, 32 					; 32 sprite rows
-SPRITE_SHIFT_LEFT_ROW_LOOP:
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-	DJNZ 	SPRITE_SHIFT_LEFT_ROW_LOOP
-
-	POP 	BC
-	DJNZ 	SPRITE_SHIFT_LEFT_LOOP
+	CALL 	SPRITE_SHIFT_LEFT_B
 
 	JP 		SPRITE_SHIFT_DONE
 
@@ -242,6 +292,54 @@ SPRITE_SHIFT_BYTE_LEFT_7_LOOP_BYTES:
 SPRITE_SHIFT_DONE:
 	RET								; SPRITE_SHIFT
 
+
+; B is number of shifts
+SPRITE_SHIFT_RIGHT_B:
+SPRITE_SHIFT_RIGHT_B_LOOP:
+	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
+	PUSH 	BC 
+	LD 		B, 32 					; 32 sprite rows
+SPRITE_SHIFT_RIGHT_B_ROW_LOOP:
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+	DJNZ 	SPRITE_SHIFT_RIGHT_B_ROW_LOOP
+
+	POP 	BC
+	DJNZ 	SPRITE_SHIFT_RIGHT_B_LOOP
+
+	RET 							; SPRITE_SHIFT_RIGHT_B
+
+; B is number of shifts
+SPRITE_SHIFT_LEFT_B:	
+SPRITE_SHIFT_LEFT_B_LOOP:	
+	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
+	PUSH 	BC 
+	LD 		B, 32 					; 32 sprite rows
+SPRITE_SHIFT_LEFT_B_ROW_LOOP:
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+	DJNZ 	SPRITE_SHIFT_LEFT_B_ROW_LOOP
+
+	POP 	BC
+	DJNZ 	SPRITE_SHIFT_LEFT_B_LOOP
+
+	RET 							; SPRITE_SHIFT_LEFT_B
 
 SPRITE_XOR:
 	LD		A, (SPRITE_Y)
