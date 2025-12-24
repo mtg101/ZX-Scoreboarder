@@ -22,16 +22,7 @@ SPRITE_RENDER:
 
 	RET 							; SPRITE_RENDER
 
-SPRITE_FLIP:
-	LD 		A, (SPRITE_FACING_NEW)	
-	LD 		B, A 					; store new facing in B
-	LD 		A, (SPRITE_FACING)
-	CP 		B 						; has direction changed?
-	RET 	Z						; no - so we're done
-
-	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
-	LD 		B, 32 					; 32 sprite rows
-SPRITE_FLIP_LOOP:
+	MACRO Sprite_Flip_Row
 	; flip first byte
 	LD 		A, (HL) 				; get byte
 	EXX 							; flip out HL and friends 
@@ -81,7 +72,7 @@ SPRITE_FLIP_LOOP:
 	LD 		(HL), E					; 3rd byte now has first
 
 ; HL points to 3rd byte 2 (right) of first row
-SPRITE_FLIP_CORRECT:
+.SPRITE_FLIP_CORRECT:
 	; correct shift for SPRITE_X position (pixel offset)
 	LD 		A, (SPRITE_X)
 	AND 	%00000111				; 0-7 'offset' in A
@@ -91,28 +82,28 @@ SPRITE_FLIP_CORRECT:
 	; JP 		Z, SPRITE_FLIP_CORRECT_0
 
 	CP  	1
-	JP 		Z, SPRITE_FLIP_CORRECT_1
+	JP 		Z, .SPRITE_FLIP_CORRECT_1
 
 	CP  	2
-	JP 		Z, SPRITE_FLIP_CORRECT_2
+	JP 		Z, .SPRITE_FLIP_CORRECT_2
 
 	CP  	3
-	JP 		Z, SPRITE_FLIP_CORRECT_3
+	JP 		Z, .SPRITE_FLIP_CORRECT_3
 
 	CP  	4
-	JP 		Z, SPRITE_FLIP_CORRECT_4
+	JP 		Z, .SPRITE_FLIP_CORRECT_4
 
 	CP  	5
-	JP 		Z, SPRITE_FLIP_CORRECT_5
+	JP 		Z, .SPRITE_FLIP_CORRECT_5
 
 	CP  	6
-	JP 		Z, SPRITE_FLIP_CORRECT_6
+	JP 		Z, .SPRITE_FLIP_CORRECT_6
 
 	CP  	7
-	JP 		Z, SPRITE_FLIP_CORRECT_7
+	JP 		Z, .SPRITE_FLIP_CORRECT_7
 
 	; so it's 0, fall through to
-SPRITE_FLIP_CORRECT_0:
+.SPRITE_FLIP_CORRECT_0:
 	DEC 	HL						; move to middle byte 1
 	LD 		A, (HL)
 	DEC 	HL 
@@ -127,9 +118,9 @@ SPRITE_FLIP_CORRECT_0:
 	INC 	HL
 	LD 		(HL), 0					; blank byte 2 / 3rd
 
-	JP  	SPRITE_FLIP_CORRECT_DONE
+	JP  	.SPRITE_FLIP_CORRECT_DONE
 
-SPRITE_FLIP_CORRECT_1:				; shift 6 left
+.SPRITE_FLIP_CORRECT_1:				; shift 6 left
 ; shift 2 left
 	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
 	DEC 	HL 						; previous byte in buffer
@@ -150,7 +141,7 @@ SPRITE_FLIP_CORRECT_1:				; shift 6 left
 	INC 	HL						; back to 3rd byte
 
 	; 1 falls through into...
-SPRITE_FLIP_CORRECT_2:				; shift 4 left
+.SPRITE_FLIP_CORRECT_2:				; shift 4 left
 ; RLD 4bit shift
 									; HL already point to 3rd byte
 	LD 		A, $00 					; blank out on right of right, A has $WX 00
@@ -167,9 +158,9 @@ SPRITE_FLIP_CORRECT_2:				; shift 4 left
 	INC 	HL 						
 	INC 	HL 						; back to pointing at 3rd byte
 
-	JP  	SPRITE_FLIP_CORRECT_DONE
+	JP  	.SPRITE_FLIP_CORRECT_DONE
 
-SPRITE_FLIP_CORRECT_3:				; shift 2 left
+.SPRITE_FLIP_CORRECT_3:				; shift 2 left
 	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
 	DEC 	HL 						; previous byte in buffer
 	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
@@ -188,13 +179,13 @@ SPRITE_FLIP_CORRECT_3:				; shift 2 left
 	INC 	HL
 	INC 	HL						; back to 3rd byte
 
-	JP  	SPRITE_FLIP_CORRECT_DONE
+	JP  	.SPRITE_FLIP_CORRECT_DONE
 
-SPRITE_FLIP_CORRECT_4:
+.SPRITE_FLIP_CORRECT_4:
 ; we're good at half way, no change needed
-	JP  	SPRITE_FLIP_CORRECT_DONE
+	JP  	.SPRITE_FLIP_CORRECT_DONE
 
-SPRITE_FLIP_CORRECT_5:				; shift right 2
+.SPRITE_FLIP_CORRECT_5:				; shift right 2
 	DEC 	HL 						; 
 	DEC 	HL						; move to 1st byte
 
@@ -213,9 +204,9 @@ SPRITE_FLIP_CORRECT_5:				; shift right 2
 	INC 	HL 						; next byte in buffer
 	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
 
-	JP  	SPRITE_FLIP_CORRECT_DONE
+	JP  	.SPRITE_FLIP_CORRECT_DONE
 
-SPRITE_FLIP_CORRECT_7:				; shift right 6
+.SPRITE_FLIP_CORRECT_7:				; shift right 6
 ; shift 2 right
 	DEC 	HL 						; 
 	DEC 	HL						; move to 1st byte
@@ -236,7 +227,7 @@ SPRITE_FLIP_CORRECT_7:				; shift right 6
 	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
 
 	; 7 fall through into...
-SPRITE_FLIP_CORRECT_6:				; shift right 4
+.SPRITE_FLIP_CORRECT_6:				; shift right 4
 ; 4bit RRD shift
 	DEC 	HL 						; 
 	DEC 	HL						; move to 1st byte
@@ -253,12 +244,141 @@ SPRITE_FLIP_CORRECT_6:				; shift right 4
 	RRD 							; rotates 3rd byte
 
 	; falls into...
-SPRITE_FLIP_CORRECT_DONE:
+.SPRITE_FLIP_CORRECT_DONE:
 	INC 	HL						; next row
 	DEC 	B
-	JP 		NZ, SPRITE_FLIP_LOOP	; too far for DJNZ
+
+	ENDM
+
+
+
+SPRITE_FLIP:
+	LD 		A, (SPRITE_FACING_NEW)	
+	LD 		B, A 					; store new facing in B
+	LD 		A, (SPRITE_FACING)
+	CP 		B 						; has direction changed?
+	RET 	Z						; no - so we're done
+
+	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
+
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+
+	Sprite_Flip_Row
+	Sprite_Flip_Row
+
 
 	RET 							; SPRITE_FLIP
+
+
+	MACRO 	Sprite_Shift_Right
+		SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+		INC 	HL 						; next byte in buffer
+		RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+		INC 	HL 						; next byte in buffer
+		RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+		INC 	HL 						; next byte in buffer for next loop
+	ENDM
+
+	MACRO Sprite_Shift_Byte_Right_7
+		LD 		A, (HL)					; get byte on left
+		INC 	HL 						; move right
+		LD 		(HL), A					; write byte
+
+		DEC 	HL 		
+		DEC 	HL						; move to first byte
+
+		LD 		A, (HL)					; get it
+		INC 	HL 						; move forward
+		LD 		(HL), A					; write
+
+		DEC 	HL						; move to first byte again
+		LD 		(HL), 0					; blank it
+
+		INC 	HL
+		INC 	HL						; back at right byte 2
+
+		SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+		DEC 	HL 						; previous byte in buffer
+		RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+		DEC 	HL 						; previous byte in buffer
+		RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+		INC 	HL 						; back to middle
+		INC 	HL 						; back to right
+		INC 	HL						; move to next row
+		INC 	HL 						; move to middle byte
+	ENDM
+
+	MACRO Sprite_Shift_Left 
+		INC 	HL
+		INC 	HL						; shifting left, so start from the right
+		SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+		DEC 	HL 						; previous byte in buffer
+		RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+		DEC 	HL 						; previous byte in buffer
+		RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+		INC 	HL
+		INC 	HL
+		INC 	HL						; step to next row
+	ENDM
+
+	MACRO Sprite_Shift_Byte_Left_7
+		SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+		INC 	HL 						; next byte in buffer
+		RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+		INC 	HL 						; next byte in buffer
+		RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+		DEC 	HL 						; back to middle byte
+
+		LD 		A, (HL)					; get byte on right
+		DEC 	HL 						; move left
+		LD 		(HL), A					; write byte
+
+		INC 	HL 		
+		INC 	HL						; move to last byte
+
+		LD 		A, (HL)					; get it
+		DEC 	HL 						; move back
+		LD 		(HL), A					; write
+
+		INC 	HL						; move to last byte again
+		LD 		(HL), 0					; blank it
+
+		INC 	HL 						; next row
+	ENDM
 
 
 SPRITE_SHIFT:
@@ -280,262 +400,42 @@ SPRITE_SHIFT_RIGHT:					; new A is > old B
 ; only ever single shift, so we're just dong 32 unrolled shifts...
 	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
 
-; sprite shift right 0
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
+; 32 rows
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
 
-; sprite shift right 1
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
 
-; sprite shift right 2
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
+	Sprite_Shift_Right
 
-; sprite shift right 3
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 4
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 5
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 6
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 7
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 8
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 9
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 10
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 11
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 12
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 13
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 14
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 15
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 16
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 17
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 18
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 19
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 20
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 21
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 22
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 23
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 24
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 25
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 26
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 27
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 28
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 29
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 30
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
-; sprite shift right 31
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer for next loop
-
+	Sprite_Shift_Right
+	Sprite_Shift_Right
 
 	RET								; SPRITE_SHIFT / SPRITE_SHIFT_RIGHT
 
@@ -543,934 +443,42 @@ SPRITE_SHIFT_BYTE_RIGHT_7:			; bytes right, then shift left 1
 									; bytes right
 	LD 		HL, SPRITE_ROW_BUFFER+1	; one to copy right
 
-	; sprite shift byte right 0
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 1
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 2
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 3
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 4
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 5
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 6
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 7
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 8
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 9
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 10
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 11
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 12
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 13
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 14
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 15
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 16
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 17
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 18
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 19
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 20
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 21
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 22
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 23
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 24
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 25
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 26
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 27
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 28
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 29
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 30
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
-	; sprite shift byte right 31
-	LD 		A, (HL)					; get byte on left
-	INC 	HL 						; move right
-	LD 		(HL), A					; write byte
-
-	DEC 	HL 		
-	DEC 	HL						; move to first byte
-
-	LD 		A, (HL)					; get it
-	INC 	HL 						; move forward
-	LD 		(HL), A					; write
-
-	DEC 	HL						; move to first byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL
-	INC 	HL						; back at right byte 2
-
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL 						; back to middle
-	INC 	HL 						; back to right
-	INC 	HL						; move to next row
-	INC 	HL 						; move to middle byte
-
+	; 32 rows
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
+
+	Sprite_Shift_Byte_Right_7
+	Sprite_Shift_Byte_Right_7
 
 	RET								; SPRITE_SHIFT / SPRITE_SHIFT_BYTE_RIGHT_7
 
@@ -1482,421 +490,43 @@ SPRITE_SHIFT_LEFT:					; new A is < old B
 ; only ever single, so it's just 32 unrolled rows of shifting..
 	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
 
-; sprit shift left 0
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
 
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
+	; 32 rows
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
 
-; sprit shift left 1
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
 
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
+	Sprite_Shift_Left
 
-; sprit shift left 2
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 3
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 4
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 5
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 6
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 7
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 8
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 9
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 10
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 11
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 12
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 13
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 14
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 15
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 16
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 17
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 18
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 19
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 20
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 21
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 22
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 23
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 24
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 25
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 26
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 27
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 28
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 29
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 30
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
-
-; sprit shift left 31
-	INC 	HL
-	INC 	HL						; shifting left, so start from the right
-	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-	DEC 	HL 						; previous byte in buffer
-	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
-
-	INC 	HL
-	INC 	HL
-	INC 	HL						; step to next row
+	Sprite_Shift_Left
+	Sprite_Shift_Left
 
 
 	RET								; SPRITE_SHIFT / SPRITE_SHIFT_LEFT
@@ -1904,808 +534,88 @@ SPRITE_SHIFT_LEFT:					; new A is < old B
 SPRITE_SHIFT_BYTE_LEFT_7:			; shift right one, then bytes left
 	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
 
-; unrolled row 0
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 1
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 2
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 3
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 4
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 5
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 6
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 7
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 8
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 9
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 10
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 11
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 12
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 13
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 14
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 15
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 16
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 17
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 18
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 19
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 20
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 21
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 22
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 23
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 24
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 25
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 26
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 27
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 28
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 29
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 30
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
-
-; unrolled row 31
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; back to middle byte
-
-	LD 		A, (HL)					; get byte on right
-	DEC 	HL 						; move left
-	LD 		(HL), A					; write byte
-
-	INC 	HL 		
-	INC 	HL						; move to last byte
-
-	LD 		A, (HL)					; get it
-	DEC 	HL 						; move back
-	LD 		(HL), A					; write
-
-	INC 	HL						; move to last byte again
-	LD 		(HL), 0					; blank it
-
-	INC 	HL 						; next row
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
+
+	Sprite_Shift_Byte_Left_7	
+	Sprite_Shift_Byte_Left_7	
 
 
 	RET								; SPRITE_SHIFT / SPRITE_SHIFT_BYTE_LEFT_7
+
+	MACRO Sprite_Xor
+									; col 0
+		LD 		A, (HL) 			; current pixels
+		LD 		C, A 				; store in B
+		LD 		A, (DE)				; sprite pixels
+		XOR 	C 					; XOR together
+		LD 		(HL), A 			; write result back
+		INC 	DE					; next sprite byte
+
+		INC 	HL 					; col 1
+		LD 		A, (HL) 			; current pixels
+		LD 		C, A 				; store in B
+		LD 		A, (DE)				; sprite pixels
+		XOR 	C 					; XOR together
+		LD 		(HL), A 			; write result back
+		INC 	DE					; next sprite byte
+
+		INC 	HL 					; col 2
+		LD 		A, (HL) 			; current pixels
+		LD 		C, A 				; store in B
+		LD 		A, (DE)				; sprite pixels
+		XOR 	C 					; XOR together
+		LD 		(HL), A 			; write result back
+		INC 	DE					; next sprite byte
+
+		DEC 	HL
+		DEC 	HL					; back to first column ready to move to next row
+
+	; inline version of Pixel_Address_Down from vector_output.asm
+		INC 	H					; Go down onto the next pixel line
+		LD 		A, H				; Check if we have gone onto next character boundary
+		AND 	7
+		JP 		NZ, .PIXEL_XOR_DONE ; No, so skip the next bit
+		LD 		A, L				; Go onto the next character line
+		ADD 	A, 32
+		LD 		L, A
+		JP	 	C, .PIXEL_XOR_DONE	; Check if we have gone onto next third of screen
+		LD 		A, H				; Yes, so go onto next third
+		SUB 	8
+		LD 		H, A
+.PIXEL_XOR_DONE:
+
+	ENDM
 
 
 SPRITE_XOR:
@@ -2717,1351 +627,42 @@ SPRITE_XOR:
 
 	LD 		DE, SPRITE_ROW_BUFFER	; start of sprite buffer
 
-; row 0
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_0 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_0	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_0:
-
-
-; row 1
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_1 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_1	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_1:
-
-; row 2
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_2 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_2	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_2:
-
-; row 3
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_3 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_3	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_3:
-
-; row 4
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_4 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_4	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_4:
-
-; row 5
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_5 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_5	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_5:
-
-; row 6
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_6 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_6	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_6:
-
-; row 7
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_7 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_7	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_7:
-
-; row 8
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_8 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_8	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_8:
-
-; row 9
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_9 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_9	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_9:
-
-; row 10
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_10 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_10	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_10:
-
-; row 11
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_11 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_11	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_11:
-
-; row 12
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_12 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_12	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_12:
-
-; row 13
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_13 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_13	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_13:
-
-; row 14
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_14 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_14	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_14:
-
-; row 15
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_15 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_15	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_15:
-
-; row 16
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_16 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_16	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_16:
-
-; row 17
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_17 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_17	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_17:
-
-; row 18
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_18 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_18	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_18:
-
-; row 19
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_19 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_19	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_19:
-
-; row 20
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_20 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_20	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_20:
-
-; row 21
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_21 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_21	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_21:
-
-; row 22
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_22 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_22	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_22:
-
-; row 23
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_23 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_23; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_23:
-
-; row 24
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_24 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_24	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_24:
-
-; row 25
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_25 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_25	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_25:
-
-; row 26
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_26 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_26	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_26:
-
-; row 27
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_27 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_27	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_27:
-
-; row 28
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_28 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_28	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_28:
-
-; row 29
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_29 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_29	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_29:
-
-; row 30
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_30 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_30	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_30:
-
-; row 31
-								; col 0
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 1
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	INC 	HL 					; col 2
-	LD 		A, (HL) 			; current pixels
-	LD 		C, A 				; store in B
-	LD 		A, (DE)				; sprite pixels
-	XOR 	C 					; XOR together
-	LD 		(HL), A 			; write result back
-	INC 	DE					; next sprite byte
-
-	DEC 	HL
-	DEC 	HL					; back to first column ready to move to next row
-
-; inline version of Pixel_Address_Down from vector_output.asm
-	INC 	H					; Go down onto the next pixel line
-	LD 		A, H				; Check if we have gone onto next character boundary
-	AND 	7
-	JP 		NZ, PIXEL_XOR_DONE_31 ; No, so skip the next bit
-	LD 		A, L				; Go onto the next character line
-	ADD 	A, 32
-	LD 		L, A
-	JP	 	C, PIXEL_XOR_DONE_31	; Check if we have gone onto next third of screen
-	LD 		A, H				; Yes, so go onto next third
-	SUB 	8
-	LD 		H, A
-PIXEL_XOR_DONE_31:
-
+; 32 rows
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+
+	Sprite_Xor
+	Sprite_Xor
 
 	RET 						; SPRITE_XOR
 
