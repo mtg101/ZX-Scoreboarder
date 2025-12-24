@@ -410,8 +410,8 @@ SPRITE_XOR:
 	CALL 	Get_Pixel_Address ; HL now has screen address
 
 	LD 		DE, SPRITE_ROW_BUFFER	; start of sprite buffer
-	LD 		B, 32				; 32 rows
-SPRITE_XOR_LOOP:
+
+; row 0
 								; col 0
 	LD 		A, (HL) 			; current pixels
 	LD 		C, A 				; store in B
@@ -441,7 +441,935 @@ SPRITE_XOR_LOOP:
 
 	CALL 	Pixel_Address_Down	; moves HL down a pixel row
 
-	DJNZ	SPRITE_XOR_LOOP
+; row 1
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 2
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 3
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 4
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 5
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 6
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 7
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 8
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 9
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 10
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 11
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 12
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 13
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 14
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 15
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 16
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 17
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 18
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 19
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 20
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 21
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 22
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 23
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 24
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 25
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 26
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 27
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 28
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 39
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 30
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+
+; row 31
+								; col 0
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 1
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	INC 	HL 					; col 2
+	LD 		A, (HL) 			; current pixels
+	LD 		C, A 				; store in B
+	LD 		A, (DE)				; sprite pixels
+	XOR 	C 					; XOR together
+	LD 		(HL), A 			; write result back
+	INC 	DE					; next sprite byte
+
+	DEC 	HL
+	DEC 	HL					; back to first column ready to move to next row
+
+	CALL 	Pixel_Address_Down	; moves HL down a pixel row
 
 
 	RET 						; SPRITE_XOR
