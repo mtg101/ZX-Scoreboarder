@@ -137,11 +137,21 @@ SPRITE_FLIP_CORRECT_0:
 	RET 							; SPRITE_FLIP_CORRECT
 
 SPRITE_FLIP_CORRECT_1:				; shift 6 left
-
-
 ; RLD 4bit shift
+									; HL already point to 3rd byte
+	LD 		A, $00 					; blank out on right of right, A has $WX 00
+	RLD								; (HL) was $YZ us now $ZX (X from A)
 
+									; A has shifted out value
+	DEC 	HL 						; 2nd byte
+	RLD 							; rotates second byte
 
+									; A has shifted out value
+	DEC 	HL 						; 1st byte
+	RLD 							; rotates first byte
+
+	INC 	HL 						
+	INC 	HL 						; back to pointing at 3rd byte
 
 ; shift 2 more left
 	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
@@ -162,15 +172,24 @@ SPRITE_FLIP_CORRECT_1:				; shift 6 left
 	INC 	HL
 	INC 	HL						; back to 3rd byte
 
-
 	RET 							; SPRITE_FLIP_CORRECT
 
 SPRITE_FLIP_CORRECT_2:				; shift 4 left
-
 ; RLD 4bit shift
+									; HL already point to 3rd byte
+	LD 		A, $00 					; blank out on right of right, A has $WX 00
+	RLD								; (HL) was $YZ us now $ZX (X from A)
 
+									; A has shifted out value
+	DEC 	HL 						; 2nd byte
+	RLD 							; rotates second byte
 
+									; A has shifted out value
+	DEC 	HL 						; 1st byte
+	RLD 							; rotates first byte
 
+	INC 	HL 						
+	INC 	HL 						; back to pointing at 3rd byte
 
 	RET 							; SPRITE_FLIP_CORRECT
 
@@ -221,16 +240,38 @@ SPRITE_FLIP_CORRECT_5:				; shift right 2
 	RET 							; SPRITE_FLIP_CORRECT
 
 SPRITE_FLIP_CORRECT_6:				; shift right 4
+; 4bit RRD shift
+	DEC 	HL 						; 
+	DEC 	HL						; move to 1st byte
 
-; 4bit shift
+	LD 		A, $00 					; blank out, A has $WX 00
+	RRD								; (HL) was $YZ us now $XY (X from A)
+
+									; A has shifted out value
+	INC 	HL 						; 2nd byte
+	RRD 							; rotates second byte
+
+									; A has shifted out value
+	INC 	HL 						; 3rd
+	RRD 							; rotates 3rd byte
 
 	RET 							; SPRITE_FLIP_CORRECT
 
 SPRITE_FLIP_CORRECT_7:				; shift right 6
+; 4bit RRD shift
+	DEC 	HL 						; 
+	DEC 	HL						; move to 1st byte
 
-; 4bit shift
+	LD 		A, $00 					; blank out, A has $WX 00
+	RRD								; (HL) was $YZ us now $XY (X from A)
 
+									; A has shifted out value
+	INC 	HL 						; 2nd byte
+	RRD 							; rotates second byte
 
+									; A has shifted out value
+	INC 	HL 						; 3rd
+	RRD 							; rotates 3rd byte
 
 ; another 2 right
 	DEC 	HL 						; 
