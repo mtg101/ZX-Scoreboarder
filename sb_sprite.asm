@@ -277,13 +277,10 @@ SPRITE_SHIFT_RIGHT:					; new A is > old B
 	CP 		7
 	JP 		Z, SPRITE_SHIFT_BYTE_RIGHT_7
 
-; only ever single shift, so no loop
-; 	LD 		B, A					; current A is number of shifts
-; SPRITE_SHIFT_RIGHT_LOOP:
+; only ever single shift, so we're just dong 32 unrolled shifts...
 	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
-;	PUSH 	BC 
-	LD 		B, 32 					; 32 sprite rows
-SPRITE_SHIFT_RIGHT_ROW_LOOP:
+
+; sprite shift right 0
 	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
 	INC 	HL 						; next byte in buffer
 	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
@@ -291,18 +288,262 @@ SPRITE_SHIFT_RIGHT_ROW_LOOP:
 	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
 	INC 	HL 						; next byte in buffer for next loop
 
-	DJNZ 	SPRITE_SHIFT_RIGHT_ROW_LOOP
+; sprite shift right 1
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
 
-;	POP 	BC
-;	DJNZ 	SPRITE_SHIFT_RIGHT_LOOP
+; sprite shift right 2
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
 
-	RET								; SPRITE_SHIFT
+; sprite shift right 3
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 4
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 5
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 6
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 7
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 8
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 9
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 10
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 11
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 12
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 13
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 14
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 15
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 16
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 17
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 18
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 19
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 20
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 21
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 22
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 23
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 24
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 25
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 26
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 27
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 28
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 29
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 30
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+; sprite shift right 31
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer for next loop
+
+
+	RET								; SPRITE_SHIFT / SPRITE_SHIFT_RIGHT
 
 SPRITE_SHIFT_BYTE_RIGHT_7:			; bytes right, then shift left 1
 									; bytes right
 	LD 		HL, SPRITE_ROW_BUFFER+1	; one to copy right
-	LD 		B, 32 					; 32 sprite rows
-SPRITE_SHIFT_BYTE_RIGHT_7_LOOP_BYTES:
+
+	; sprite shift byte right 0
 	LD 		A, (HL)					; get byte on left
 	INC 	HL 						; move right
 	LD 		(HL), A					; write byte
@@ -331,25 +572,919 @@ SPRITE_SHIFT_BYTE_RIGHT_7_LOOP_BYTES:
 	INC 	HL						; move to next row
 	INC 	HL 						; move to middle byte
 
-	DJNZ 	SPRITE_SHIFT_BYTE_RIGHT_7_LOOP_BYTES
+	; sprite shift byte right 1
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
 
-	RET								; SPRITE_SHIFT
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 2
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 3
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 4
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 5
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 6
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 7
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 8
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 9
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 10
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 11
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 12
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 13
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 14
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 15
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 16
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 17
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 18
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 19
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 20
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 21
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 22
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 23
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 24
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 25
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 26
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 27
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 28
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 29
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 30
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+	; sprite shift byte right 31
+	LD 		A, (HL)					; get byte on left
+	INC 	HL 						; move right
+	LD 		(HL), A					; write byte
+
+	DEC 	HL 		
+	DEC 	HL						; move to first byte
+
+	LD 		A, (HL)					; get it
+	INC 	HL 						; move forward
+	LD 		(HL), A					; write
+
+	DEC 	HL						; move to first byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL
+	INC 	HL						; back at right byte 2
+
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL 						; back to middle
+	INC 	HL 						; back to right
+	INC 	HL						; move to next row
+	INC 	HL 						; move to middle byte
+
+
+	RET								; SPRITE_SHIFT / SPRITE_SHIFT_BYTE_RIGHT_7
 
 SPRITE_SHIFT_LEFT:					; new A is < old B
 	NEG								; A was negative
 	CP 		7
 	JP 		Z, SPRITE_SHIFT_BYTE_LEFT_7
 
-; only ever single, so don't need loop
-; 	LD 		B, A 					; number of shifts
-; SPRITE_SHIFT_LEFT_LOOP:	
+; only ever single, so it's just 32 unrolled rows of shifting..
 	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
-;	PUSH 	BC 
-	LD 		B, 32 					; 32 sprite rows
-SPRITE_SHIFT_LEFT_ROW_LOOP:
+
+; sprit shift left 0
 	INC 	HL
 	INC 	HL						; shifting left, so start from the right
-
 	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
 	DEC 	HL 						; previous byte in buffer
 	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
@@ -360,19 +1495,416 @@ SPRITE_SHIFT_LEFT_ROW_LOOP:
 	INC 	HL
 	INC 	HL						; step to next row
 
-	DJNZ 	SPRITE_SHIFT_LEFT_ROW_LOOP
+; sprit shift left 1
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
 
-	; POP 	BC
-	; DJNZ 	SPRITE_SHIFT_LEFT_LOOP
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
 
-	RET								; SPRITE_SHIFT
+; sprit shift left 2
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 3
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 4
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 5
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 6
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 7
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 8
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 9
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 10
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 11
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 12
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 13
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 14
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 15
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 16
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 17
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 18
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 19
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 20
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 21
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 22
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 23
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 24
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 25
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 26
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 27
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 28
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 29
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 30
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+; sprit shift left 31
+	INC 	HL
+	INC 	HL						; shifting left, so start from the right
+	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+	DEC 	HL 						; previous byte in buffer
+	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
+
+	INC 	HL
+	INC 	HL
+	INC 	HL						; step to next row
+
+
+	RET								; SPRITE_SHIFT / SPRITE_SHIFT_LEFT
 
 SPRITE_SHIFT_BYTE_LEFT_7:			; shift right one, then bytes left
 	LD 		HL, SPRITE_ROW_BUFFER	; start of buffer
 
-									; shift right one
-	LD 		B, 32 					; 32 sprite rows
-SPRITE_SHIFT_BYTE_LEFT_7_LOOP:
+; unrolled row 0
 	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
 	INC 	HL 						; next byte in buffer
 	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
@@ -397,9 +1929,783 @@ SPRITE_SHIFT_BYTE_LEFT_7_LOOP:
 
 	INC 	HL 						; next row
 
-	DJNZ 	SPRITE_SHIFT_BYTE_LEFT_7_LOOP
+; unrolled row 1
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
 
-	RET								; SPRITE_SHIFT
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 2
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 3
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 4
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 5
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 6
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 7
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 8
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 9
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 10
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 11
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 12
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 13
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 14
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 15
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 16
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 17
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 18
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 19
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 20
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 21
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 22
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 23
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 24
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 25
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 26
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 27
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 28
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 29
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 30
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+; unrolled row 31
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; back to middle byte
+
+	LD 		A, (HL)					; get byte on right
+	DEC 	HL 						; move left
+	LD 		(HL), A					; write byte
+
+	INC 	HL 		
+	INC 	HL						; move to last byte
+
+	LD 		A, (HL)					; get it
+	DEC 	HL 						; move back
+	LD 		(HL), A					; write
+
+	INC 	HL						; move to last byte again
+	LD 		(HL), 0					; blank it
+
+	INC 	HL 						; next row
+
+
+	RET								; SPRITE_SHIFT / SPRITE_SHIFT_BYTE_LEFT_7
 
 
 SPRITE_XOR:
