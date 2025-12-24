@@ -439,7 +439,20 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_0 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_0	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_0:
+
 
 ; row 1
 								; col 0
@@ -469,7 +482,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_1 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_1	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_1:
 
 ; row 2
 								; col 0
@@ -499,7 +524,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_2 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_2	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_2:
 
 ; row 3
 								; col 0
@@ -529,7 +566,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_3 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_3	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_3:
 
 ; row 4
 								; col 0
@@ -559,7 +608,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_4 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_4	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_4:
 
 ; row 5
 								; col 0
@@ -589,7 +650,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_5 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_5	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_5:
 
 ; row 6
 								; col 0
@@ -619,7 +692,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_6 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_6	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_6:
 
 ; row 7
 								; col 0
@@ -649,7 +734,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_7 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_7	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_7:
 
 ; row 8
 								; col 0
@@ -679,7 +776,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_8 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_8	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_8:
 
 ; row 9
 								; col 0
@@ -709,7 +818,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_9 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_9	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_9:
 
 ; row 10
 								; col 0
@@ -739,7 +860,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_10 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_10	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_10:
 
 ; row 11
 								; col 0
@@ -769,7 +902,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_11 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_11	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_11:
 
 ; row 12
 								; col 0
@@ -799,7 +944,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_12 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_12	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_12:
 
 ; row 13
 								; col 0
@@ -829,7 +986,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_13 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_13	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_13:
 
 ; row 14
 								; col 0
@@ -859,7 +1028,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_14 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_14	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_14:
 
 ; row 15
 								; col 0
@@ -889,7 +1070,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_15 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_15	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_15:
 
 ; row 16
 								; col 0
@@ -919,7 +1112,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_16 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_16	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_16:
 
 ; row 17
 								; col 0
@@ -949,7 +1154,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_17 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_17	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_17:
 
 ; row 18
 								; col 0
@@ -979,7 +1196,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_18 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_18	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_18:
 
 ; row 19
 								; col 0
@@ -1009,7 +1238,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_19 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_19	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_19:
 
 ; row 20
 								; col 0
@@ -1039,7 +1280,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_20 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_20	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_20:
 
 ; row 21
 								; col 0
@@ -1069,7 +1322,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_21 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_21	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_21:
 
 ; row 22
 								; col 0
@@ -1099,7 +1364,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_22 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_22	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_22:
 
 ; row 23
 								; col 0
@@ -1129,7 +1406,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_23 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_23; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_23:
 
 ; row 24
 								; col 0
@@ -1159,7 +1448,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_24 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_24	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_24:
 
 ; row 25
 								; col 0
@@ -1189,7 +1490,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_25 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_25	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_25:
 
 ; row 26
 								; col 0
@@ -1219,7 +1532,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_26 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_26	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_26:
 
 ; row 27
 								; col 0
@@ -1249,7 +1574,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_27 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_27	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_27:
 
 ; row 28
 								; col 0
@@ -1279,9 +1616,21 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_28 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_28	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_28:
 
-; row 39
+; row 29
 								; col 0
 	LD 		A, (HL) 			; current pixels
 	LD 		C, A 				; store in B
@@ -1309,7 +1658,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_29 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_29	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_29:
 
 ; row 30
 								; col 0
@@ -1339,7 +1700,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_30 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_30	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_30:
 
 ; row 31
 								; col 0
@@ -1369,7 +1742,19 @@ SPRITE_XOR:
 	DEC 	HL
 	DEC 	HL					; back to first column ready to move to next row
 
-	CALL 	Pixel_Address_Down	; moves HL down a pixel row
+; inline version of Pixel_Address_Down from vector_output.asm
+	INC 	H					; Go down onto the next pixel line
+	LD 		A, H				; Check if we have gone onto next character boundary
+	AND 	7
+	JP 		NZ, PIXEL_XOR_DONE_31 ; No, so skip the next bit
+	LD 		A, L				; Go onto the next character line
+	ADD 	A, 32
+	LD 		L, A
+	JP	 	C, PIXEL_XOR_DONE_31	; Check if we have gone onto next third of screen
+	LD 		A, H				; Yes, so go onto next third
+	SUB 	8
+	LD 		H, A
+PIXEL_XOR_DONE_31:
 
 
 	RET 						; SPRITE_XOR

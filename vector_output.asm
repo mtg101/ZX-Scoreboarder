@@ -54,7 +54,8 @@ Get_Pixel_Address:	LD A,B				; Calculate Y2,Y1,Y0
 
 ; Move HL down one pixel line
 ;
-Pixel_Address_Down:	INC H				; Go down onto the next pixel line
+Pixel_Address_Down:	
+			INC H				; Go down onto the next pixel line
 			LD A,H				; Check if we have gone onto next character boundary
 			AND 7
 			RET NZ				; No, so skip the next bit
