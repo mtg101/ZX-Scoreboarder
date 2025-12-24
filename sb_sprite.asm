@@ -80,23 +80,15 @@ SPRITE_FLIP_LOOP:
 
 	LD 		(HL), E					; 3rd byte now has first
 
-	PUSH 	BC
-	CALL 	SPRITE_FLIP_CORRECT		; correct 'offset'
-	POP 	BC
-
-	INC 	HL						; next row
-	DJNZ 	SPRITE_FLIP_LOOP
-
-	RET 							; SPRITE_FLIP
-
 ; HL points to 3rd byte 2 (right) of first row
 SPRITE_FLIP_CORRECT:
 	; correct shift for SPRITE_X position (pixel offset)
 	LD 		A, (SPRITE_X)
 	AND 	%00000111				; 0-7 'offset' in A
 
-	CP  	0
-	JP 		Z, SPRITE_FLIP_CORRECT_0
+	; don't need this CP, will fall through at end
+	; CP  	0
+	; JP 		Z, SPRITE_FLIP_CORRECT_0
 
 	CP  	1
 	JP 		Z, SPRITE_FLIP_CORRECT_1
@@ -119,6 +111,7 @@ SPRITE_FLIP_CORRECT:
 	CP  	7
 	JP 		Z, SPRITE_FLIP_CORRECT_7
 
+	; so it's 0, fall through to
 SPRITE_FLIP_CORRECT_0:
 	DEC 	HL						; move to middle byte 1
 	LD 		A, (HL)
@@ -134,26 +127,10 @@ SPRITE_FLIP_CORRECT_0:
 	INC 	HL
 	LD 		(HL), 0					; blank byte 2 / 3rd
 
-	RET 							; SPRITE_FLIP_CORRECT
+	JP  	SPRITE_FLIP_CORRECT_DONE
 
 SPRITE_FLIP_CORRECT_1:				; shift 6 left
-; RLD 4bit shift
-									; HL already point to 3rd byte
-	LD 		A, $00 					; blank out on right of right, A has $WX 00
-	RLD								; (HL) was $YZ us now $ZX (X from A)
-
-									; A has shifted out value
-	DEC 	HL 						; 2nd byte
-	RLD 							; rotates second byte
-
-									; A has shifted out value
-	DEC 	HL 						; 1st byte
-	RLD 							; rotates first byte
-
-	INC 	HL 						
-	INC 	HL 						; back to pointing at 3rd byte
-
-; shift 2 more left
+; shift 2 left
 	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
 	DEC 	HL 						; previous byte in buffer
 	RL 		(HL)					; shift byte using carry for bit0, and leaving into carry
@@ -172,8 +149,7 @@ SPRITE_FLIP_CORRECT_1:				; shift 6 left
 	INC 	HL
 	INC 	HL						; back to 3rd byte
 
-	RET 							; SPRITE_FLIP_CORRECT
-
+	; 1 falls through into...
 SPRITE_FLIP_CORRECT_2:				; shift 4 left
 ; RLD 4bit shift
 									; HL already point to 3rd byte
@@ -191,7 +167,7 @@ SPRITE_FLIP_CORRECT_2:				; shift 4 left
 	INC 	HL 						
 	INC 	HL 						; back to pointing at 3rd byte
 
-	RET 							; SPRITE_FLIP_CORRECT
+	JP  	SPRITE_FLIP_CORRECT_DONE
 
 SPRITE_FLIP_CORRECT_3:				; shift 2 left
 	SLA 	(HL)					; shift 3rd byte left, 0 in bit0, leaving in carry
@@ -212,11 +188,11 @@ SPRITE_FLIP_CORRECT_3:				; shift 2 left
 	INC 	HL
 	INC 	HL						; back to 3rd byte
 
-	RET 							; SPRITE_FLIP_CORRECT
+	JP  	SPRITE_FLIP_CORRECT_DONE
 
 SPRITE_FLIP_CORRECT_4:
 ; we're good at half way, no change needed
-	RET 							; SPRITE_FLIP_CORRECT
+	JP  	SPRITE_FLIP_CORRECT_DONE
 
 SPRITE_FLIP_CORRECT_5:				; shift right 2
 	DEC 	HL 						; 
@@ -237,8 +213,29 @@ SPRITE_FLIP_CORRECT_5:				; shift right 2
 	INC 	HL 						; next byte in buffer
 	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
 
-	RET 							; SPRITE_FLIP_CORRECT
+	JP  	SPRITE_FLIP_CORRECT_DONE
 
+SPRITE_FLIP_CORRECT_7:				; shift right 6
+; shift 2 right
+	DEC 	HL 						; 
+	DEC 	HL						; move to 1st byte
+
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	DEC 	HL 						; 
+	DEC 	HL						; move to 1st byte
+
+	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+	INC 	HL 						; next byte in buffer
+	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
+
+	; 7 fall through into...
 SPRITE_FLIP_CORRECT_6:				; shift right 4
 ; 4bit RRD shift
 	DEC 	HL 						; 
@@ -255,44 +252,14 @@ SPRITE_FLIP_CORRECT_6:				; shift right 4
 	INC 	HL 						; 3rd
 	RRD 							; rotates 3rd byte
 
-	RET 							; SPRITE_FLIP_CORRECT
+	; falls into...
+SPRITE_FLIP_CORRECT_DONE:
+	INC 	HL						; next row
+	DEC 	B
+	JP 		NZ, SPRITE_FLIP_LOOP	; too far for DJNZ
 
-SPRITE_FLIP_CORRECT_7:				; shift right 6
-; 4bit RRD shift
-	DEC 	HL 						; 
-	DEC 	HL						; move to 1st byte
+	RET 							; SPRITE_FLIP
 
-	LD 		A, $00 					; blank out, A has $WX 00
-	RRD								; (HL) was $YZ us now $XY (X from A)
-
-									; A has shifted out value
-	INC 	HL 						; 2nd byte
-	RRD 							; rotates second byte
-
-									; A has shifted out value
-	INC 	HL 						; 3rd
-	RRD 							; rotates 3rd byte
-
-; another 2 right
-	DEC 	HL 						; 
-	DEC 	HL						; move to 1st byte
-
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	DEC 	HL 						; 
-	DEC 	HL						; move to 1st byte
-
-	SRL 	(HL)					; shift first byte right, 0 in bit7, leaving in carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-	INC 	HL 						; next byte in buffer
-	RR 		(HL)					; shift byte using carry for bit7, and leaving into carry
-
-	RET 							; SPRITE_FLIP_CORRECT
 
 SPRITE_SHIFT:
 	LD 		A, (SPRITE_X)			; current x
