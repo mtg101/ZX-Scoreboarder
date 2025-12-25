@@ -178,7 +178,7 @@ SPRITE_FACING_NEW:
 	DEFB 	1
 
 SPRITE_Y:
-	DEFB 	100
+	DEFB 	102
 
 	INCLUDE "sb_sprite_prerender_pixels.asm"
 
