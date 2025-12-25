@@ -16,7 +16,13 @@ START:
 	CALL 	INITIAL_SETUP
 
 ANIMATE_MAIN:
-	CALL	WAIT_BOTTOM_MAIN_SCREEN_TIGHT	; wait for end of main screen draw
+	CALL	WAIT_BOTTOM_MAIN_SCREEN_TIGHT	
+	CALL	WAIT_BOTTOM_MAIN_SCREEN_TIGHT	
+	CALL	WAIT_BOTTOM_MAIN_SCREEN_TIGHT_OFF
+	CALL	WAIT_BOTTOM_MAIN_SCREEN_TIGHT_OFF
+	CALL	WAIT_BOTTOM_MAIN_SCREEN_TIGHT	
+	CALL	WAIT_BOTTOM_MAIN_SCREEN_TIGHT_OFF
+	
 	CALL 	BOTTOM_BORDER_RENDER	; timing critical
 	HALT							; wait for vsync (fired after bottom border, start of vblank)
 
@@ -28,33 +34,64 @@ ANIMATE_MAIN:
 ; flashing green on green 
 ATTR_FGG        = %10100100
 
+
+WAIT_BOTTOM_MAIN_SCREEN_M2
+WAIT_BOTTOM_MAIN_SCREEN_M2_LOOP:
+	IN 		A, ($FF)
+	CP 		ATTR_FGG
+	JP 		NZ, WAIT_BOTTOM_MAIN_SCREEN_M2_LOOP	
+	RET 							; WAIT_BOTTOM_MAIN_SCREEN_M2
+
 WAIT_BOTTOM_MAIN_SCREEN_TIGHT:
-	SBC 	A, 2
-	.3 NOP
 WAIT_BOTTOM_MAIN_SCREEN_TIGHT_LOOP:
 	IN 		A, ($FF)
 	CP 		ATTR_FGG
 	RET 	Z						; WAIT_BOTTOM_MAIN_SCREEN_TIGHT
 	JP 		WAIT_BOTTOM_MAIN_SCREEN_TIGHT_LOOP
 
+WAIT_BOTTOM_MAIN_SCREEN_TIGHT_OFF:
+WAIT_BOTTOM_MAIN_SCREEN_TIGHT_LOOP_OFF:
+	IN 		A, ($FF)
+	CP 		ATTR_FGG
+	RET 	NZ						; WAIT_BOTTOM_MAIN_SCREEN_TIGHT
+	JP 		WAIT_BOTTOM_MAIN_SCREEN_TIGHT_LOOP_OFF
 
 
+; waits for trigger attr to go on/off/on/off to lock down timing
+WAIT_BOTTOM_MAIN_SCREEN_MULTI:
+	SBC 	A, 2
+	.3 NOP
 
-; WAIT_BOTTOM_MAIN_SCREEN:
-; 	LD     C, $FF
-; WAIT_BOTTOM_MAIN_SCREEN_LOOP:
-; 	IN  	A, (C)					; read from floating bus
-; 	CP 		ATTR_FGG				; flashing green on green is trigger
-; 	JP 		Z, WAIT_BOTTOM_MAIN_SCREEN_DONE	; tight wait for trigger colour...
-	
-; 	IN  	A, ($FF)					; read from floating bus
-; 	CP 		ATTR_FGG				; flashing green on green is trigger
-; 	JP 		Z, WAIT_BOTTOM_MAIN_SCREEN_DONE	; tight wait for trigger colour...
+WAIT_BOTTOM_MAIN_SCREEN_MULTI_ON_1:
+	IN 		A, ($FF)
+	CP 		ATTR_FGG
+	JP	 	Z, WAIT_BOTTOM_MAIN_SCREEN_MULTI_OFF_1
+	JP 		WAIT_BOTTOM_MAIN_SCREEN_MULTI_ON_1
 
-; 	JP		WAIT_BOTTOM_MAIN_SCREEN_LOOP
+WAIT_BOTTOM_MAIN_SCREEN_MULTI_OFF_1:
+	IN 		A, ($FF)
+	CP 		ATTR_FGG
+	JP	 	NZ, WAIT_BOTTOM_MAIN_SCREEN_MULTI_ON_2
+	JP 		WAIT_BOTTOM_MAIN_SCREEN_MULTI_OFF_1
 
-; WAIT_BOTTOM_MAIN_SCREEN_DONE:
-; 	RET 							; WAIT_BOTTOM_MAIN_SCREEN
+WAIT_BOTTOM_MAIN_SCREEN_MULTI_ON_2:
+	IN 		A, ($FF)
+	CP 		ATTR_FGG
+	JP	 	Z, WAIT_BOTTOM_MAIN_SCREEN_MULTI_OFF_2
+	JP 		WAIT_BOTTOM_MAIN_SCREEN_MULTI_ON_2
+
+WAIT_BOTTOM_MAIN_SCREEN_MULTI_OFF_2:
+	IN 		A, ($FF)
+	CP 		ATTR_FGG
+	JP	 	NZ, WAIT_BOTTOM_MAIN_SCREEN_MULTI_ON_3
+	JP 		WAIT_BOTTOM_MAIN_SCREEN_MULTI_OFF_2
+
+
+WAIT_BOTTOM_MAIN_SCREEN_MULTI_ON_3:
+
+
+	RET 							; WAIT_BOTTOM_MAIN_SCREEN_MULTI
+
 
 
 ; 8 scanline * 224 = 1,752 t-states (minus some for alignment, push/pop, calls, etc...)
@@ -89,8 +126,8 @@ INITIAL_SETUP:
 
 	CALL 	SPRITE_INIT				; draw initial sprite and any other setup
 
-	LD 		B, 17					; number of block to set to trigger attr
-	LD 		HL, ATTR_END - 16		; first attr to change
+	LD 		B, 16					; number of block to set to trigger attr
+	LD 		HL, ATTR_END - 15		; first attr to change
 	LD 		A, ATTR_FGG				; trigger attr (flashing green on green)
 INITIAL_SETUP_TRIGGE_ATTR_LOOP:	
 	LD		(HL), A 

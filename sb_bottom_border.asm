@@ -7,16 +7,17 @@ BOTTOM_BORDER_RENDER:
 
 
 ; hack off as it needs exact timing to avoid flashing like shit...
-	RET
+;	RET
 
 
 
 
 
 	; timing for actual bottom border
-	LD		B, 178
+	LD		B, 12
 BOTTOM_BORDER_TIMING_LOOP:
 	DJNZ	BOTTOM_BORDER_TIMING_LOOP
+
 
 	; fiddling
 	.6 NOP
@@ -25,7 +26,7 @@ BOTTOM_BORDER_TIMING_LOOP:
 	LD		C, $FE
 	LD 		HL, BOTTOM_BORDER_BUFFER
 
-	LD 		B, 50		; 55 bottom border, giving time to halt and resync
+	LD 		B, 55		; 55 bottom border, giving time to halt and resync
 BOTTOM_BORDER_RENDER_LOOP:	
 	;11 cols
 	LD 		A, B		; save loop B in A
