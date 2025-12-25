@@ -1,18 +1,6 @@
 ; timining-critical flipping of static bottom border colours
 ; 220 t-states per row
 BOTTOM_BORDER_RENDER:		
-;	LD 		A, 0
-;	OUT		($FE), A				; set border
-
-
-
-; hack off as it needs exact timing to avoid flashing like shit...
-;	RET
-
-
-
-
-
 	; timing for actual bottom border
 	LD		B, 12
 BOTTOM_BORDER_TIMING_LOOP:
