@@ -8,7 +8,7 @@
 	INCLUDE "sb_bottom_border.asm"
 	INCLUDE "sb_game.asm"
 	INCLUDE "sb_border_font.asm"
-	INCLUDE "sb_sprite.asm"
+	INCLUDE "sb_sprite_prerender.asm"
 	INCLUDE "vector_output.asm"
 	
 START:
