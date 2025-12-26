@@ -138,36 +138,42 @@ SPRITE_XOR_DONE_LR:
 	RET 						; SPRITE_XOR
 
 SPRITE_MOVE_LEFT:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
 	LD 		A, (SPRITE_X_NEW)
 	CP 		0 
 	JP	 	Z, SPRITE_MOVE_NO_WRAP_TIMING	; don't wrap
 
 	DEC 	A 
 	LD 		(SPRITE_X_NEW), A
-	LD 		A, 0				; facing left
+	LD 		A, 0					; facing left
 	LD 		(SPRITE_FACING_NEW), A
-	RET							; SPRITE_MOVE_LEFT
+	RET								; SPRITE_MOVE_LEFT
 
 SPRITE_MOVE_RIGHT:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
 	LD 		A, (SPRITE_X_NEW)
-	CP 		239					; 255 - 16
+	CP 		239						; 255 - 16
 	JP	 	Z, SPRITE_MOVE_NO_WRAP_TIMING	; don't wrap
 
 	INC 	A 
 	LD 		(SPRITE_X_NEW), A
-	LD 		A, 1				; facing right
+	LD 		A, 1					; facing right
 	LD 		(SPRITE_FACING_NEW), A
-	RET							; SPRITE_MOVE_RIGHT
+	RET								; SPRITE_MOVE_RIGHT
 
-SPRITE_MOVE_NO_WRAP_TIMING:
+SPRITE_MOVE_NO_WRAP_TIMING:			; #timing
 	.3 NOP
-	RET 						; SPRITE_MOVE_NO_WRAP_TIMING
+	RET 							; SPRITE_MOVE_NO_WRAP_TIMING
 
 
 ; draw initial sprite and any other setup
 SPRITE_INIT:	
-	CALL 	SPRITE_XOR			; make sure initial SPRITE_X is on byte boundary
-	RET 						; SPRITE_INIT
+	CALL 	SPRITE_XOR				; make sure initial SPRITE_X is on byte boundary
+	RET 							; SPRITE_INIT
 
 SPRITE_X:
 	DEFB 	64

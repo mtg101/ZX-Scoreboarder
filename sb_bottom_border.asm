@@ -1,19 +1,20 @@
 ; timining-critical flipping of static bottom border colours
 ; 220 t-states per row
 BOTTOM_BORDER_RENDER:		
+	; #timing
 	; timing for actual bottom border
-	LD		B, 101
+	LD		B, 81
 BOTTOM_BORDER_TIMING_LOOP:
 	DJNZ	BOTTOM_BORDER_TIMING_LOOP
 
-	; fiddling
-	.7 NOP
+	; fiddling #timing
+	.8 NOP
 
 	; render bottom border
 	LD		C, $FE
 	LD 		HL, BOTTOM_BORDER_BUFFER
 
-	LD 		B, 55		; 55 bottom border, giving time to halt and resync
+	LD 		B, 56		; 56 bottom border
 BOTTOM_BORDER_RENDER_LOOP:	
 	;11 cols
 	LD 		A, B		; save loop B in A

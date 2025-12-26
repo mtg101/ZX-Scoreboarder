@@ -56,6 +56,9 @@ BORDER_BUFFER_LIVES_PAP:
 	DEFB	COL_CYN			
 
 BORDER_BUFFER_LIVES_INC:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
 	LD		A, (BORDER_BUFFER_LIVES)
 	CP 		8
 	RET 	NC			; already 8 or bigger, don't INC
@@ -66,6 +69,9 @@ BORDER_BUFFER_LIVES_INC:
 	RET 				; BORDER_BUFFER_LIVES_INC
 
 BORDER_BUFFER_LIVES_DEC:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
 	LD		A, (BORDER_BUFFER_LIVES)
 	CP 		0
 	RET 	Z			; already 0, don't DEC
@@ -318,6 +324,9 @@ BORDER_BUFFER_SCORE:
 
 
 BORDER_BUFFER_SCORE_INC:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
 	LD 		A, (BORDER_BUFFER_SCORE)     
 
 	; check max
@@ -332,6 +341,9 @@ BORDER_BUFFER_SCORE_INC:
 	RET 				; BORDER_BUFFER_SCORE_INC
 
 BORDER_BUFFER_SCORE_DEC:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
 	LD 		A, (BORDER_BUFFER_SCORE)     
 
 	; check min
@@ -448,6 +460,9 @@ BORDER_BUFFER_ENERGY:
 	DEFB	47
 
 BORDER_BUFFER_ENERGY_INC:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
 	LD		A, (BORDER_BUFFER_ENERGY)
 	CP 		56
 	RET 	NC			; already 56 or bigger, don't INC
@@ -458,6 +473,9 @@ BORDER_BUFFER_ENERGY_INC:
 	RET 				; BORDER_BUFFER_ENERGY_INC
 
 BORDER_BUFFER_ENERGY_DEC:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
 	LD		A, (BORDER_BUFFER_ENERGY)
 	CP 		0
 	RET 	Z			; already 0, don't DEC

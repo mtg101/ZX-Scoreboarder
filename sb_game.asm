@@ -17,6 +17,9 @@ MAIN_GAME_LOOP:
 ; $BFFE	1011 1111	ENTER	L	K	J	H
 ; $7FFE	0111 1111	SPACE	SYM	M	N	B
 USER_INPUT:
+	LD 		A, 0
+	LD 		(USER_INPUT_ACTION), A	; clear it
+
 	LD 		BC, $FEFE				; SHIFT	Z	X	C	V
 	IN 		A, (C)
 
@@ -61,5 +64,23 @@ USER_INPUT:
 	BIT 	1, A 					; l
 	CALL 	Z, BORDER_BUFFER_ENERGY_DEC
 
+	LD 		A, (USER_INPUT_ACTION)
+	CP 		0						
+	CALL 	Z, MAIN_GAME_NO_ACTION	; nothing else done, so pad timing
+
 
 	RET 							; USER_INPUT
+
+; used to pad timings when nothing is pressed
+USER_INPUT_ACTION:
+	DEFB	0
+
+; used to pad timing when nothing has been pressed
+MAIN_GAME_NO_ACTION:				; #timing
+	LD		B, 255
+MAIN_GAME_NO_ACTION_LOOP:
+	DJNZ	MAIN_GAME_NO_ACTION_LOOP
+
+	; fiddling #timing
+	.8 NOP
+	RET 							; MAIN_GAME_NO_ACTION
