@@ -2,13 +2,12 @@
 ; 220 t-states per row
 BOTTOM_BORDER_RENDER:		
 	; timing for actual bottom border
-	LD		B, 12
+	LD		B, 101
 BOTTOM_BORDER_TIMING_LOOP:
 	DJNZ	BOTTOM_BORDER_TIMING_LOOP
 
-
 	; fiddling
-	.6 NOP
+	.7 NOP
 
 	; render bottom border
 	LD		C, $FE

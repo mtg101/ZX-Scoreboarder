@@ -140,7 +140,7 @@ SPRITE_XOR_DONE_LR:
 SPRITE_MOVE_LEFT:
 	LD 		A, (SPRITE_X_NEW)
 	CP 		0 
-	RET 	Z					; don't wrap
+	JP	 	Z, SPRITE_MOVE_NO_WRAP_TIMING	; don't wrap
 
 	DEC 	A 
 	LD 		(SPRITE_X_NEW), A
@@ -151,13 +151,18 @@ SPRITE_MOVE_LEFT:
 SPRITE_MOVE_RIGHT:
 	LD 		A, (SPRITE_X_NEW)
 	CP 		239					; 255 - 16
-	RET 	Z 					; don't wrap
+	JP	 	Z, SPRITE_MOVE_NO_WRAP_TIMING	; don't wrap
 
 	INC 	A 
 	LD 		(SPRITE_X_NEW), A
 	LD 		A, 1				; facing right
 	LD 		(SPRITE_FACING_NEW), A
 	RET							; SPRITE_MOVE_RIGHT
+
+SPRITE_MOVE_NO_WRAP_TIMING:
+	.3 NOP
+	RET 						; SPRITE_MOVE_NO_WRAP_TIMING
+
 
 ; draw initial sprite and any other setup
 SPRITE_INIT:	
